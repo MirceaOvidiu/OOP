@@ -35,3 +35,6 @@
 #Miscellanous
 .pdf
 .rar
+
+#environment specifics
+.gradle
