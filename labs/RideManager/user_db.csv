@@ -1,0 +1,10 @@
+File permissions: -rwxrwx-w-
+Owner: root
+of group: admin
+user,email,level,group,security question index, security question answer, RSA encrypted password
+mircea,m@g.com,user,user,3,passat,603 333 137 194 445 333 ,
+gigel,gigel@gmail.com,user,user,2,wow,251 224 114 199 363 224 ,
+root,root@gmail.com,admin,admin,3,touran,333 515 237 3 219 ,
+admin,N/A,admin,admin,1,N/A,279 161 29 79 287 ,
+random,random@gmail.com,user,user,1,paris,228 279 287 161 308 29 245 279 191 191 ,
+admin,N/A,admin,admin,1,N/A,279 161 29 79 287 ,
