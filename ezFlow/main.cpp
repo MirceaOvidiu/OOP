@@ -1,5 +1,9 @@
-//
-// Created by Mircea on 12/28/2023.
-//
+#include "UX.h"
 
-#include "main.h"
+using namespace std;
+
+int main() {
+    UX::mainMenu();
+
+    return 0;
+}
