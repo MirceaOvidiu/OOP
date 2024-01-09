@@ -19,92 +19,73 @@ using namespace std;
 /// @brief TitleStep
 /// @param title: configured at flow creation
 /// @param subtitle: configured at flow creation
-class TitleStep
-{
+class TitleStep {
 public:
     string type = "TITLE";
     int index = 0; /// TITLE index will always be 0
     string title;
     string subtitle;
 
-    TitleStep()
-    {
+    TitleStep() {
         this->title = "default";
         this->subtitle = "default";
     }
 
-    void setTitle(string new_title)
-    {
+    void setTitle(string new_title) {
         this->title = std::move(new_title);
     }
 
-    void setSubtitle(string new_subtitle)
-    {
+    void setSubtitle(string new_subtitle) {
         this->subtitle = std::move(new_subtitle);
     }
 
-    void setIndex(int new_index)
-    {
+    void setIndex(int new_index) {
         this->index = new_index;
     }
 
-    [[nodiscard]] string getTitle() const
-    {
+    [[nodiscard]] string getTitle() const {
         return this->title;
     }
 
-    [[nodiscard]] string getSubtitle() const
-    {
+    [[maybe_unused]] [[nodiscard]] string getSubtitle() const {
         return this->subtitle;
     }
 
-    [[nodiscard]] int getIndex() const
-    {
+    [[nodiscard]] int getIndex() const {
         return this->index;
     }
 
-    static string enterTitle()
-    {
+    static string enterTitle() {
         string temp_title;
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter title: ";
             getline(cin, temp_title);
 
-            if (Utils::titleValidity(temp_title))
-            {
+            if (Utils::titleValidity(temp_title)) {
                 return temp_title;
-            }
-            else
-            {
+            } else {
                 cout << "Invalid title. Try again.\n";
             }
         }
     }
 
-    static string enterSubtitle()
-    {
-        string temp_subtitle;
+    static string enterSubtitle() {
+        string temp_subtitle = "unset";
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter subtitle: ";
             getline(cin, temp_subtitle);
 
-            if (Utils::titleValidity(temp_subtitle))
-            {
+            if (Utils::titleValidity(temp_subtitle)) {
                 return temp_subtitle;
-            }
-            else
-            {
+            } else {
                 cout << "Invalid subtitle. Try again.\n";
             }
         }
     }
 
-    static void setupTitleStep(TitleStep &newTitle)
-    {
+    static void setupTitleStep(TitleStep &newTitle) {
         std::cout << "Setting up step " << newTitle.getIndex() << ": TITLE...";
         newTitle.setTitle(enterTitle());
         newTitle.setSubtitle(enterSubtitle());
@@ -116,7 +97,8 @@ public:
         ///        to preserve tidiness and our sanity
         string filename = "./../FlowConfigFiles/" + titleStep.title + "FlowConfig.csv";
         file.open(filename, ios::app);
-        file << titleStep.index << "," << titleStep.type << "," << titleStep.title << "," << titleStep.subtitle << "\n";
+        file << "INDEX, TYPE, ARG1, ARG2\n"
+             << titleStep.index << "," << titleStep.type << "," << titleStep.title << "," << titleStep.subtitle << "\n";
         file.close();
     }
 };
@@ -127,68 +109,56 @@ public:
 /// @brief Fields: title, subtitle
 /// @param: title - configured at flow creation
 /// @param: subtitle - configured at flow creation
-class TextStep : TitleStep
-{
+class TextStep : TitleStep {
 public:
     int index = 0;
     string type = "TEXT";
 
-    TextStep()
-    {
+    TextStep() {
         this->title = "default";
         this->subtitle = "default";
     }
 
-    void setText(string new_text)
-    {
+    void setText(string new_text) {
         this->title = std::move(new_text);
     }
 
-    void setCopy()
-    {
+    void setCopy() {
         this->subtitle = this->title;
     }
 
-    [[nodiscard]] string getText() const
-    {
+
+    [[nodiscard]] string getText() const {
         return this->title;
     }
 
-    [[nodiscard]] string getCopy() const
-    {
+    [[nodiscard]] string getCopy() const {
         return this->subtitle;
     }
 
-    static string enterText()
-    {
-        string temp_text;
+    static string enterText() {
+        string temp_text = "unset";
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter text: ";
             getline(cin, temp_text);
 
-            if (Utils::textValidity(temp_text))
-            {
+            if (Utils::textValidity(temp_text)) {
                 return temp_text;
-            }
-            else
-            {
+            } else {
                 cout << "Invalid text. Try again.\n";
             }
         }
     }
 
-    static void setupTextStep(TextStep &newText)
-    {
+    static void setupTextStep(TextStep &newText) {
         std::cout << "Setting up a TEXT step...";
         string new_text = enterText();
         newText.setText(new_text);
         newText.setCopy();
     }
 
-    static void writeTextStep(const TextStep &textStep, const string &filename)
-    {
+    static void writeTextStep(const TextStep &textStep, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
         file << textStep.index << "," << textStep.type << "," << textStep.title << "," << textStep.subtitle << "\n";
@@ -199,88 +169,70 @@ public:
 /// @brief Fields: description, text input
 /// @param: description - configured at flow creation
 /// @param: text input - configured at runtime
-class TextInputStep : TitleStep
-{
+class TextInputStep : TitleStep {
 public:
     int index = 0;
     string type = "TEXT INPUT";
 
-    TextInputStep()
-    {
+    TextInputStep() {
         this->title = "default";
         this->subtitle = "default";
     }
 
-    void setDescription(string new_description)
-    {
+    void setDescription(string new_description) {
         this->title = std::move(new_description);
     }
 
-    void setTextInput(string new_text_input)
-    {
+    void setTextInput(string new_text_input) {
         this->subtitle = std::move(new_text_input);
     }
 
-    [[nodiscard]] string getDescription() const
-    {
+    [[nodiscard]] string getDescription() const {
         return this->title;
     }
 
-    [[nodiscard]] string getTextInput() const
-    {
+    [[nodiscard]] string getTextInput() const {
         return this->subtitle;
     }
 
-    static string enterDescription()
-    {
+    static string enterDescription() {
         /// To avoid displaying "invalid description" for the empty string
-        string temp_description;
+        string temp_description = "unset";
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter description: ";
             cin >> temp_description;
 
-            if (Utils::textValidity(temp_description))
-            {
+            if (Utils::textValidity(temp_description)) {
                 return temp_description;
-            }
-            else
-            {
+            } else {
                 cout << "Invalid description. Try again.\n";
             }
         }
     }
 
-    static string enterText()
-    {
+    static string enterText() {
         string temp_text_input = "unset";
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter text input: ";
             getline(cin, temp_text_input);
 
-            if (Utils::textValidity(temp_text_input))
-            {
+            if (Utils::textValidity(temp_text_input)) {
                 return temp_text_input;
-            }
-            else
-            {
+            } else {
                 cout << "Invalid text input. Try again.\n";
             }
         }
     }
 
-    static void setupTextInputStep(TextInputStep &newTextInput)
-    {
+    static void setupTextInputStep(TextInputStep &newTextInput) {
         std::cout << "Setting up a TEXT INPUT step...";
         newTextInput.setDescription(enterDescription());
         /// newTextInput.setTextInput(enterText()); - at runtime
     }
 
-    static void writeTextInputStep(TextInputStep &newTextInput, const string &filename)
-    {
+    static void writeTextInputStep(TextInputStep &newTextInput, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
         file << newTextInput.index << "," << newTextInput.type << "," << newTextInput.title << ","
@@ -292,95 +244,76 @@ public:
 /// @brief Fields: description, number input
 /// @param description: configured at flow creation
 /// @param number input: configured at runtime
-class NumberInputStep : TitleStep
-{
+class NumberInputStep {
 public:
     int index = 0;
     string type = "NUMBER INPUT";
     float number_input = 0;
     string description;
 
-    NumberInputStep()
-    {
+    NumberInputStep() {
         this->description = "default";
     }
 
-    void setNumberInput(float new_number_input)
-    {
+    void setNumberInput(float new_number_input) {
         this->number_input = new_number_input;
     }
 
-    void setDescription(string new_description)
-    {
+    void setDescription(string new_description) {
         this->description = std::move(new_description);
     }
 
-    [[nodiscard]] float getNumberInput() const
-    {
+    [[nodiscard]] float getNumberInput() const {
         return this->number_input;
     }
 
-    [[nodiscard]] string getDescription() const
-    {
+    [[nodiscard]] string getDescription() const {
         return this->description;
     }
 
-    static string enterDescription()
-    {
-        string temp_description;
+    static string enterDescription() {
+        string temp_description = "unset";
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter description: ";
             getline(cin, temp_description);
 
-            if (Utils::textValidity(temp_description))
-            {
+            if (Utils::textValidity(temp_description)) {
                 return temp_description;
-            }
-            else
-            {
+            } else {
                 cout << "Invalid description. Try again.\n";
             }
         }
     }
 
-    static float enterNumberStepInput()
-    {
+    static float enterNumberStepInput() {
         float temp_number_input;
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter number input: ";
             cin >> temp_number_input;
 
-            if (cin.fail())
-            {
+            if (cin.fail()) {
                 cin.clear();
                 cin.ignore(1000, '\n');
                 cout << "Invalid number input. Try again.\n";
-            }
-            else
-            {
+            } else {
                 return temp_number_input;
             }
         }
     }
 
-    static void setupNumberInputStep(NumberInputStep &newNumberInput)
-    {
+    static void setupNumberInputStep(NumberInputStep &newNumberInput) {
         std::cout << "Setting up a NUMBER INPUT step..."
                   << "\n";
         newNumberInput.setDescription(enterDescription());
         /// newNumberInput.setNumberInput(enterNumberStepInput()); - at runtime
     }
 
-    static void writeNumberInputStep(NumberInputStep &newNumberInput, const string &filename)
-    {
+    static void writeNumberInputStep(NumberInputStep &newNumberInput, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
-        file << newNumberInput.index << "," << newNumberInput.type << "," << newNumberInput.subtitle << ","
-             << to_string(newNumberInput.number_input)
+        file << newNumberInput.index << "," << newNumberInput.type << "," << newNumberInput.description << ","
              << "\n";
         file.close();
     }
@@ -391,8 +324,7 @@ public:
 /// @param operations: configured at runtime
 /// @param involved steps: | step number - at flow creation
 ///                        | actual value - at runtime
-class CalculusStep
-{
+class CalculusStep {
 public:
     int index = 0;
     string type = "CALCULUS";
@@ -401,112 +333,85 @@ public:
     std::vector<NumberInputStep> involved_steps;
 
     /*
-     A phase contains:
-      - a number input step
-        - an operation
-      So, in the config file, the syntax consist of NrSteps intertwined with operations.
+      In the config file, the syntax consist of NrSteps intertwined with operations.
      */
 
-    CalculusStep()
-    {
+    CalculusStep() {
         this->number_output = 0;
     }
 
-    [[nodiscard]] float getNumberOutput() const
-    {
+    [[nodiscard]] float getNumberOutput() const {
         return this->number_output;
     }
 
-    [[nodiscard]] int getIndex() const
-    {
+    [[nodiscard]] int getIndex() const {
         return this->index;
     }
 
-    static void setInvolvedSteps(CalculusStep &calculusStep, std::vector<NumberInputStep> &involved_steps)
-    {
+    static void setInvolvedSteps(CalculusStep &calculusStep, std::vector<NumberInputStep> &involved_steps) {
         calculusStep.involved_steps = involved_steps;
     }
 
-    static void setIndex(CalculusStep &calculusStep, int new_index)
-    {
+    static void setIndex(CalculusStep &calculusStep, int new_index) {
         calculusStep.index = new_index;
     }
 
-    static float returnMax(std::vector<NumberInputStep> &involved_steps)
-    {
+    static float returnMax(std::vector<NumberInputStep> &involved_steps) {
         float max = 0;
-        for (auto &involved_step : involved_steps)
-        {
-            if (max > involved_step.number_input)
-            {
+        for (auto &involved_step: involved_steps) {
+            if (max > involved_step.number_input) {
                 max = involved_step.number_input;
-            }
-            else
+            } else
                 continue;
         }
         return max;
     }
 
-    static float returnMin(std::vector<NumberInputStep> &involved_steps)
-    {
+    static float returnMin(std::vector<NumberInputStep> &involved_steps) {
         float min = 0;
-        for (auto &involved_step : involved_steps)
-        {
-            if (min < involved_step.number_input)
-            {
+        for (auto &involved_step: involved_steps) {
+            if (min < involved_step.number_input) {
                 min = involved_step.number_input;
-            }
-            else
+            } else
                 continue;
         }
         return min;
     }
 
-    static string enterOperation()
-    {
+    static string enterOperation() {
         string temp_operation = "+";
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter operation: ";
             getline(cin, temp_operation);
 
-            if (Utils::operationValidity(temp_operation))
-            {
+            if (Utils::operationValidity(temp_operation)) {
                 return temp_operation;
-            }
-            else
-            {
+            } else {
                 cout << "Invalid operation. Try again.\n";
             }
         }
     }
 
-    static void printSteps(CalculusStep &calculusStep)
-    {
+    static void printSteps(CalculusStep &calculusStep) {
         std::vector<int> involved_steps_indexes;
-        for (auto &involved_step : calculusStep.involved_steps)
-        {
-            cout << "Step" << involved_step.index << " (" << involved_step.description << ")"
+        for (auto &involved_step: calculusStep.involved_steps) {
+            cout << "Step " << involved_step.index << " (" << involved_step.description << ")"
                  << "\n";
         }
     }
 
-    static int enterStep(CalculusStep &calculusStep)
-    {
+    static int enterStep(CalculusStep &calculusStep) {
         int choice;
         cout << "Available number input steps: \n";
         printSteps(calculusStep);
 
-        while (true)
-        {
+        while (true) {
             cout << "Choose a step by its index: ";
             cin >> choice;
 
-            for (auto &involved_step : calculusStep.involved_steps)
-            {
-                if (involved_step.index == choice)
-                {
+            for (auto &involved_step: calculusStep.involved_steps) {
+                if (involved_step.index == choice) {
                     cout << "Step " << choice << " chosen. \n";
                     return choice;
                 }
@@ -514,8 +419,7 @@ public:
         }
     }
 
-    static void writeCalculusStep(CalculusStep &calculusStep, const string &filename)
-    {
+    static void writeCalculusStep(CalculusStep &calculusStep, const string &filename) {
         cout << "Writing calculus step to file...\n";
         ofstream file;
         file.open(filename, ios::app);
@@ -524,74 +428,73 @@ public:
         FlowUtils::printOperations();
         printSteps(calculusStep);
 
-        for (int i = 0; i < calculusStep.involved_steps.size() - 1; i++)
-        {
-            file << "Step " << enterStep(calculusStep) << " " << enterOperation() << " ";
+        if (calculusStep.involved_steps.empty()) {
+            cout << "No number steps were added. \n";
+            return;
         }
 
-        /// for the last one
-        file << "Step " << enterStep(calculusStep) << ","
-             << "\n";
+        if (calculusStep.involved_steps.size() == 1) {
+            file << "Step " << enterStep(calculusStep) << ","
+                 << "\n";
+            return;
+        } else {
+
+            for (int i = 0; i < calculusStep.involved_steps.size() - 1; i++) {
+                file << "Step " << enterStep(calculusStep) << " " << enterOperation() << " ";
+            }
+
+            /// for the last one
+            file << "Step " << enterStep(calculusStep) << ","
+                 << "\n";
+        }
     }
 };
 
 /// @param filename: configured at runtime
-class TextFileStep
-{
+class TextFileStep {
 public:
     int index;
     string type = "TEXT FILE";
     string filename;
 
-    TextFileStep()
-    {
+    TextFileStep() {
         this->index = 0;
         this->filename = "default";
     }
 
-    void setFilename(string new_filename)
-    {
+    void setFilename(string new_filename) {
         this->filename = std::move(new_filename);
     }
 
-    void setIndex(int new_index)
-    {
+    virtual void setIndex(int new_index) {
         this->index = new_index;
     }
 
-    [[nodiscard]] string getFilename() const
-    {
+    [[nodiscard]] string getFilename() const {
         return this->filename;
     }
 
-    static string enterFilename()
-    {
+    static string enterFilename() {
         string temp_filename;
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter filename: ";
             getline(cin, temp_filename);
 
-            if (Utils::isTxtFile(temp_filename))
-            {
+            if (Utils::isTxtFile(temp_filename)) {
                 return temp_filename;
-            }
-            else
-            {
+            } else {
                 cout << "Not a .txt file. \n";
             }
         }
     }
 
-    static void setupTextFileStep(TextFileStep &newTextFile)
-    {
+    static void setupTextFileStep(TextFileStep &newTextFile) {
         std::cout << "Setting up a TEXT FILE step...";
         newTextFile.setFilename(enterFilename());
     }
 
-    static void writeFileStep(TextFileStep &newTextFile, const string &filename)
-    {
+    static void writeFileStep(TextFileStep &newTextFile, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
         file << newTextFile.index << "," << newTextFile.type << "," << newTextFile.filename << "\n";
@@ -601,61 +504,49 @@ public:
 
 /// @brief CSVFileStep will inherit TextFileStep
 /// it only performs a different regex check
-class CSVFileStep : TextFileStep
-{
+class CSVFileStep : TextFileStep {
 public:
     int index;
     string type = "CSV FILE";
 
-    CSVFileStep()
-    {
+    CSVFileStep() {
         this->index = 0;
         this->filename = "default";
     }
 
-    static string enterFilename()
-    {
+    static string enterFilename() {
         string temp_filename;
 
-        while (true)
-        {
+        while (true) {
             cout << "Enter filename: ";
             getline(cin, temp_filename);
 
-            if (Utils::isCsvFile(temp_filename))
-            {
+            if (Utils::isCsvFile(temp_filename)) {
                 return temp_filename;
-            }
-            else
-            {
+            } else {
                 cout << "Not a .csv file name. \n";
             }
         }
     }
 
-    void setIndex(int new_index)
-    {
+    void setIndex(int new_index) override {
         this->index = new_index;
     }
 
-    [[nodiscard]] string getFilename() const
-    {
+    [[nodiscard]] string getFilename() {
         return this->filename;
     }
 
-    [[nodiscard]] int getIndex() const
-    {
+    [[maybe_unused]][[nodiscard]] int getIndex() const {
         return this->index;
     }
 
-    static void setupCSVFileStep(CSVFileStep &newCSVFile)
-    {
+    static void setupCSVFileStep(CSVFileStep &newCSVFile) {
         std::cout << "Setting up a CSV FILE step...";
         newCSVFile.setFilename(enterFilename());
     }
 
-    static void writeFileStep(CSVFileStep &newCSVFile, const string &filename)
-    {
+    static void writeFileStep(CSVFileStep &newCSVFile, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
         file << newCSVFile.index << "," << newCSVFile.type << "," << newCSVFile.filename << "\n";
@@ -665,93 +556,77 @@ public:
 
 /// @brief Fields: file to display
 /// @param file to display: configured at flow creation
-class DisplayStep
-{
+class DisplayStep {
 public:
     int index;
     string file_to_display;
     string type = "DISPLAY";
 
-    DisplayStep()
-    {
+    DisplayStep() {
         this->index = 0;
         this->file_to_display = "default";
     };
 
-    void setFileToDisplay(string new_filename)
-    {
+    void setFileToDisplay(string new_filename) {
         this->file_to_display = std::move(new_filename);
     }
 
-    [[nodiscard]] string getFileToDisplay() const
-    {
+    [[nodiscard]] string getFileToDisplay() const {
         return this->file_to_display;
     }
 
-    static string enterFilename()
-    {
+    static string enterFilename() {
         string temp_filename;
 
-        while (true)
-        {
+        while (true) {
             cout << "File to display: ";
             getline(cin, temp_filename);
 
-            if (Utils::isTxtFile(temp_filename) || Utils::isCsvFile(temp_filename))
-            {
+            if (Utils::isTxtFile(temp_filename) || Utils::isCsvFile(temp_filename)) {
                 return temp_filename;
-            }
-            else
-            {
+            } else {
                 cout << "Not a .txt/.csv file. \n";
             }
         }
     }
 
-    static void displayFile(const string &filename)
-    {
+    static void displayFile(const string &filename) {
         ifstream file;
         file.open(filename);
         string line;
-        while (getline(file, line))
-        {
+        while (getline(file, line)) {
             cout << line << "\n";
         }
         file.close();
     }
 
-    static void setupDisplayStep(DisplayStep &newDisplayStep)
-    {
+    static void setupDisplayStep(DisplayStep &newDisplayStep) {
         std::cout << "Setting up a DISPLAY step...";
         newDisplayStep.setFileToDisplay(enterFilename());
     }
 
-    static void
-    writeDisplayStep(const DisplayStep &displayStep, const string &filename, const string &file_to_display)
-    {
+    static void writeDisplayStep(const DisplayStep &displayStep, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
+        cout << "Output file will be written in: " << displayStep.getFileToDisplay() << "\n";
         file << displayStep.index << "," << displayStep.type << "," << displayStep.file_to_display << ","
              << "\n";
         file.close();
     }
 };
 
-class OutputStep
-{
+class OutputStep {
 public:
     int index;
     string type = "OUTPUT";
 
-    OutputStep()
-    {
+    OutputStep() {
         this->index = 0;
     }
 
     /// No variables to be set.
 
-    static void writeOutputStep(const OutputStep &outputStep, const string &filename)
-    {
+    static void writeOutputStep(const OutputStep &outputStep, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
         file << outputStep.index << "," << outputStep.type << "\n";
@@ -759,21 +634,18 @@ public:
     }
 };
 
-class EndStep
-{
+class EndStep {
 public:
     int index;
     string type = "END";
 
-    EndStep()
-    {
+    EndStep() {
         this->index = 0;
     }
 
     /// No variables to be set.
 
-    static void writeEndStep(const EndStep &endStep, const string &filename)
-    {
+    static void writeEndStep(const EndStep &endStep, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
         file << endStep.index << "," << endStep.type << "\n";

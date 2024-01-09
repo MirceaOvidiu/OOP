@@ -33,8 +33,8 @@ public:
         /// The flow config file is created here as well.
         TitleStep Title = TitleStep();
         TitleStep::setupTitleStep(Title);
+        Title.setIndex(step_count);
         TitleStep::writeTitleStep(Title);
-        Title.index = step_count;
 
         string filename = "./FlowConfigFiles/" + Title.getTitle() + "FlowConfig.csv";
 
@@ -122,14 +122,13 @@ public:
                 DisplayStep Display = DisplayStep();
                 DisplayStep::setupDisplayStep(Display);
                 Display.index = step_count;
-                DisplayStep::writeDisplayStep(Display,filename, Display.getFileToDisplay());
+                DisplayStep::writeDisplayStep(Display,filename);
             }
 
             if(choice == 9)
             {
                 step_count+=1;
                 OutputStep Output = OutputStep();
-                /// To do
                 Output.index = step_count;
                 OutputStep::writeOutputStep(Output,filename);
             }

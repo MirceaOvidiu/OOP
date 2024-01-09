@@ -1,0 +1,9 @@
+1,TEXT,text,text
+2,TEXT INPUT,description,default
+3,NUMBER INPUT,nr unu,
+4,NUMBER INPUT,nr doi,
+5,CALCULUS,Step 3 - Step 4,
+6,TEXT FILE,cv.txt
+7,CSV FILE,cv.csv
+8,DISPLAY,cv.txt,
+9,END
