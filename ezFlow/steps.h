@@ -22,7 +22,7 @@ using namespace std;
 class TitleStep {
 public:
     string type = "TITLE";
-    int index = 0; /// TITLE index will always be 0
+    int index = 0; /// will remain
     string title;
     string subtitle;
 
