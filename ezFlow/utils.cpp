@@ -60,11 +60,15 @@ std::string Utils::getTimeStamp() {
 }
 
 void FlowUtils::listSteps() {
+    std::cout << "1.TITLE 2.TEXT 3.TEXT INPUT 4.NUMBER INPUT 5.CALCULUS 6.TEXT FILE 7.CSV FILE 8.DISPLAY 9.OUTPUT 10.END\n";
+}
+
+void FlowUtils::listStepDetails() {
     cout << "1.TITLE        - title and subtitle of the flow.\n"
          << "2.TEXT         - text to be displayed and a copy.\n"
          << "3.TEXT INPUT   - description and actual text.\n"
          << "4.NUMBER INPUT - description and float value.\n"
-         << "5.CALCULUS     -  involved NumberSteps and numeric result.\n"
+         << "5.CALCULUS     - involved NumberSteps and numeric result.\n"
          << "6.TEXT FILE    - description of the file and file path.\n"
          << "7.CSV FILE     - description of the file and file path.\n"
          << "8.DISPLAY      - display the contents of a .csv/.txt file.\n"

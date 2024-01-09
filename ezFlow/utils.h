@@ -29,6 +29,8 @@ class FlowUtils {
 public:
     static void listSteps();
 
+    static void listStepDetails();
+
     static int chooseStep();
 
     static void printOperations();
