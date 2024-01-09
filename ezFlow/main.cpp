@@ -1,9 +1,9 @@
-#include "UX.h"
+#include "CLI.h"
 
 using namespace std;
 
 int main() {
-    UX::mainMenu();
+    CLI::mainMenu();
 
     return 0;
 }

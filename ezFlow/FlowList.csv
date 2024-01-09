@@ -1,4 +1,4 @@
-FLOW TITLE, CONFIG FILE
-
-ceiutz,./FlowConfigFilesceiutzFlowConfig.csv
-test,./FlowConfigFilestestFlowConfig.csv
+FLOW TITLE, CONFIG FILE PATH
+ceiutz,./FlowConfigFiles/ceiutzFlowConfig.csv
+test,./FlowConfigFiles/testFlowConfig.csv
+test21,./FlowConfigFiles/test21FlowConfig.csv

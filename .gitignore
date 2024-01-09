@@ -42,5 +42,6 @@
 .json
 .idea
 
+./.clang-format
 ./.run
 ./.vscode

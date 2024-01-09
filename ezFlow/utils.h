@@ -5,12 +5,13 @@
 #ifndef OOP_UTILS_H
 #define OOP_UTILS_H
 
+#include "CLI.h"
+#include "steps.h"
+#include "utils.h"
+#include <chrono>
 #include <iostream>
 #include <regex>
 #include <string>
-#include "steps.h"
-#include "UX.h"
-#include "utils.h"
 
 using namespace std;
 
@@ -61,6 +62,21 @@ public:
             return false;
         }
     }
+
+    static string getTimeStamp()
+    {
+        // Get the current time point
+        auto now = std::chrono::system_clock::now();
+
+        // Convert the time point to a time_t object
+        std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
+
+        // Convert time_t to a string
+        std::string timeString = std::ctime(&currentTime);
+        timeString.pop_back();
+
+        return timeString;
+    }
 };
 
 class FlowUtils
@@ -68,14 +84,22 @@ class FlowUtils
 public:
     static void listSteps()
     {
-        cout << "1.TITLE 2.TEXT 3.TEXT INPUT 4.NUMBER INPUT 5.CALCULUS 6.TEXT FILE 7.CSV FILE 8.DISPLAY 9.OUTPUT 10.END\n";
+        cout << "1.TITLE        - title and subtitle of the flow.\n"
+             << "2.TEXT         - text to be displayed and a copy.\n"
+             << "3.TEXT INPUT   - description and actual text.\n"
+             << "4.NUMBER INPUT - description and float value.\n"
+             << "5.CALCULUS     -  involved NumberSteps and numeric result.\n"
+             << "6.TEXT FILE    - description of the file and file path.\n"
+             << "7.CSV FILE     - description of the file and file path.\n"
+             << "8.DISPLAY      - display the contents of a .csv/.txt file.\n"
+             << "9.OUTPUT       - description, steps written, and outfile name.\n"
+             << "10.EXIT        - time created, signals flow end.\n";
     }
 
     static int chooseStep()
     {
         int choice;
-        cout << "Choose a step out of: \n";
-        listSteps();
+        cout << "Choose a step: \n";
         cin >> choice;
         return choice;
     }

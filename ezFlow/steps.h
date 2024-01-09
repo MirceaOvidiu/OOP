@@ -656,19 +656,17 @@ public:
         this->index = 0;
     }
 
-    /// No variables to be set.
-
     static void writeEndStep(const EndStep &endStep, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
-        file << endStep.index << "," << endStep.type << "\n";
+        file << endStep.index << "," << endStep.type << "," << "created at: " << Utils::getTimeStamp() << "\n";
         file.close();
     }
 
     static void addFlowToList(const TitleStep &titleStep) {
         ofstream file;
         file.open("FlowList.csv", ios::app);
-        file << titleStep.getTitle() << ",./FlowConfigFiles" << titleStep.getTitle() << "FlowConfig.csv" << "\n";
+        file << titleStep.getTitle() << ",./FlowConfigFiles/" << titleStep.getTitle() << "FlowConfig.csv" << "\n";
         file.close();
     }
 };
