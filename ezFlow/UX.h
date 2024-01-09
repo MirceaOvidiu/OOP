@@ -143,6 +143,7 @@ public:
                 /// Nothing to setup here
                 End.index = step_count;
                 EndStep::writeEndStep(End,filename);
+                EndStep::addFlowToList(Title);
                 break;
             }
 

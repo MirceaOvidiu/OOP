@@ -165,7 +165,8 @@ public:
     static void writeTextStep(const TextStep &textStep, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
-        file << textStep.index << "," << textStep.type << "," << textStep.getText() << "," << textStep.getCopy() << "\n";
+        file << textStep.index << "," << textStep.type << "," << textStep.getText() << "," << textStep.getCopy()
+             << "\n";
         file.close();
     }
 };
@@ -649,6 +650,7 @@ class EndStep {
 public:
     int index;
     string type = "END";
+    string flow_list = "FlowList.csv";
 
     EndStep() {
         this->index = 0;
@@ -660,6 +662,13 @@ public:
         ofstream file;
         file.open(filename, ios::app);
         file << endStep.index << "," << endStep.type << "\n";
+        file.close();
+    }
+
+    static void addFlowToList(const TitleStep &titleStep) {
+        ofstream file;
+        file.open("FlowList.csv", ios::app);
+        file << titleStep.getTitle() << ",./FlowConfigFiles" << titleStep.getTitle() << "FlowConfig.csv" << "\n";
         file.close();
     }
 };
