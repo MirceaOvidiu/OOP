@@ -41,3 +41,6 @@
 .kts
 .json
 .idea
+
+./.run
+./.vscode

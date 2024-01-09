@@ -47,7 +47,7 @@ public:
         return this->title;
     }
 
-    [[maybe_unused]] [[nodiscard]] string getSubtitle() const {
+    [[nodiscard]] string getSubtitle() const {
         return this->subtitle;
     }
 
@@ -56,6 +56,7 @@ public:
     }
 
     static string enterTitle() {
+        fflush(stdin);
         string temp_title;
 
         while (true) {
@@ -71,7 +72,8 @@ public:
     }
 
     static string enterSubtitle() {
-        string temp_subtitle = "unset";
+        fflush(stdin);
+        string temp_subtitle;
 
         while (true) {
             cout << "Enter subtitle: ";
@@ -86,7 +88,7 @@ public:
     }
 
     static void setupTitleStep(TitleStep &newTitle) {
-        std::cout << "Setting up step " << newTitle.getIndex() << ": TITLE...";
+        std::cout << "Setting up step " << newTitle.getIndex() << ": TITLE...\n";
         newTitle.setTitle(enterTitle());
         newTitle.setSubtitle(enterSubtitle());
     }
@@ -95,10 +97,11 @@ public:
         ofstream file;
         /// @brief The flow file is created in the FlowConfigFiles folder
         ///        to preserve tidiness and our sanity
-        string filename = "./../FlowConfigFiles/" + titleStep.title + "FlowConfig.csv";
+        string filename = "./FlowConfigFiles/" + titleStep.getTitle() + "FlowConfig.csv";
         file.open(filename, ios::app);
-        file << "INDEX, TYPE, ARG1, ARG2\n"
-             << titleStep.index << "," << titleStep.type << "," << titleStep.title << "," << titleStep.subtitle << "\n";
+        file << "INDEX, TYPE, ARG1, ARG2\n";
+        file << titleStep.index << "," << titleStep.type << "," << titleStep.getTitle() << ","
+             << titleStep.getSubtitle() << "\n";
         file.close();
     }
 };
@@ -137,6 +140,7 @@ public:
     }
 
     static string enterText() {
+        fflush(stdin); /// to avoid extra "invalid input"
         string temp_text = "unset";
 
         while (true) {
@@ -152,7 +156,7 @@ public:
     }
 
     static void setupTextStep(TextStep &newText) {
-        std::cout << "Setting up a TEXT step...";
+        std::cout << "Setting up a TEXT step...\n";
         string new_text = enterText();
         newText.setText(new_text);
         newText.setCopy();
@@ -161,7 +165,7 @@ public:
     static void writeTextStep(const TextStep &textStep, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
-        file << textStep.index << "," << textStep.type << "," << textStep.title << "," << textStep.subtitle << "\n";
+        file << textStep.index << "," << textStep.type << "," << textStep.getText() << "," << textStep.getCopy() << "\n";
         file.close();
     }
 };
@@ -196,8 +200,8 @@ public:
     }
 
     static string enterDescription() {
-        /// To avoid displaying "invalid description" for the empty string
-        string temp_description = "unset";
+        fflush(stdin);
+        string temp_description;
 
         while (true) {
             cout << "Enter description: ";
@@ -227,9 +231,8 @@ public:
     }
 
     static void setupTextInputStep(TextInputStep &newTextInput) {
-        std::cout << "Setting up a TEXT INPUT step...";
+        std::cout << "Setting up a TEXT INPUT step...\n";
         newTextInput.setDescription(enterDescription());
-        /// newTextInput.setTextInput(enterText()); - at runtime
     }
 
     static void writeTextInputStep(TextInputStep &newTextInput, const string &filename) {
@@ -246,8 +249,8 @@ public:
 /// @param number input: configured at runtime
 class NumberInputStep {
 public:
-    int index = 0;
     string type = "NUMBER INPUT";
+    int index = 0;
     float number_input = 0;
     string description;
 
@@ -272,7 +275,8 @@ public:
     }
 
     static string enterDescription() {
-        string temp_description = "unset";
+        fflush(stdin);
+        string temp_description;
 
         while (true) {
             cout << "Enter description: ";
@@ -287,6 +291,7 @@ public:
     }
 
     static float enterNumberStepInput() {
+        fflush(stdin);
         float temp_number_input;
 
         while (true) {
@@ -379,6 +384,7 @@ public:
     }
 
     static string enterOperation() {
+        fflush(stdin);
         string temp_operation = "+";
 
         while (true) {
@@ -475,6 +481,7 @@ public:
     }
 
     static string enterFilename() {
+        fflush(stdin);
         string temp_filename;
 
         while (true) {
@@ -490,14 +497,14 @@ public:
     }
 
     static void setupTextFileStep(TextFileStep &newTextFile) {
-        std::cout << "Setting up a TEXT FILE step...";
+        std::cout << "Setting up a TEXT FILE step...\n";
         newTextFile.setFilename(enterFilename());
     }
 
     static void writeFileStep(TextFileStep &newTextFile, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
-        file << newTextFile.index << "," << newTextFile.type << "," << newTextFile.filename << "\n";
+        file << newTextFile.index << "," << newTextFile.type << "," << newTextFile.getFilename() << "\n";
         file.close();
     }
 };
@@ -515,6 +522,7 @@ public:
     }
 
     static string enterFilename() {
+        fflush(stdin);
         string temp_filename;
 
         while (true) {
@@ -537,12 +545,12 @@ public:
         return this->filename;
     }
 
-    [[maybe_unused]][[nodiscard]] int getIndex() const {
+    [[nodiscard]] int getIndex() const {
         return this->index;
     }
 
     static void setupCSVFileStep(CSVFileStep &newCSVFile) {
-        std::cout << "Setting up a CSV FILE step...";
+        std::cout << "Setting up a CSV FILE step...\n";
         newCSVFile.setFilename(enterFilename());
     }
 
@@ -576,6 +584,7 @@ public:
     }
 
     static string enterFilename() {
+        fflush(stdin);
         string temp_filename;
 
         while (true) {
@@ -601,7 +610,7 @@ public:
     }
 
     static void setupDisplayStep(DisplayStep &newDisplayStep) {
-        std::cout << "Setting up a DISPLAY step...";
+        std::cout << "Setting up a DISPLAY step...\n";
         newDisplayStep.setFileToDisplay(enterFilename());
     }
 
@@ -619,17 +628,19 @@ class OutputStep {
 public:
     int index;
     string type = "OUTPUT";
+    string out_file;
 
     OutputStep() {
         this->index = 0;
+        this->out_file = "set at runtime";
     }
 
-    /// No variables to be set.
+    /// No variables to be set at flow creation
 
     static void writeOutputStep(const OutputStep &outputStep, const string &filename) {
         ofstream file;
         file.open(filename, ios::app);
-        file << outputStep.index << "," << outputStep.type << "\n";
+        file << outputStep.index << "," << outputStep.type << "," << outputStep.out_file << "\n";
         file.close();
     }
 };

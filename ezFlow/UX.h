@@ -8,6 +8,7 @@
 #include <iostream>
 #include "steps.h"
 #include "utils.h"
+#include "flowRunner.h"
 
 using namespace std;
 
@@ -31,12 +32,14 @@ public:
         /// Will be here by default.
         /// Only 1 title step per flow is allowed.
         /// The flow config file is created here as well.
+
         TitleStep Title = TitleStep();
         TitleStep::setupTitleStep(Title);
         Title.setIndex(step_count);
         TitleStep::writeTitleStep(Title);
 
         string filename = "./FlowConfigFiles/" + Title.getTitle() + "FlowConfig.csv";
+
 
         /// All the number inputs will be moved here after writing
         /// to be accessed in the Calculus step, without having to
@@ -150,6 +153,11 @@ public:
         }
     }
 
+    static void runFlow() {
+        cout << "Running flow...\n";
+        FlowRunner::runFlow();
+    }
+
     static void mainMenu() {
         int choice;
         cout << "1. Create new flow\n";
@@ -162,7 +170,7 @@ public:
                 createFlow();
                 break;
             case 2:
-                /// Open and run existing flow
+                runFlow();
                 break;
             case 3:
                 
