@@ -15,7 +15,7 @@ using namespace std;
 class CLI {
 public:
     CLI() {
-        cout << " ezFlow session started\n";
+        cout << "ezFlow CLI session started\n";
     }
 
     static void createFlowMenu() {

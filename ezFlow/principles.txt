@@ -1,0 +1,10 @@
+Flow creation:
+Steps are selected - in this phase, input will be enforced to be correct.
+A flowConfigFile is created - this file contains the steps and the input set at creation for each step.
+The actual values for the variables defined beforehand will be entered at runtime.
+
+Flow execution:
+The flowConfigFile is parsed and the steps are executed in the order they are defined.
+The flowRunFile will be created - basically a config file with the missing values for each step,
+and the runtime errors caught during execution.
+Flow outputs will contain few selected steps and will go into their respective folder.
