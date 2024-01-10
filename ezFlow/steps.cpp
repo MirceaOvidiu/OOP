@@ -170,6 +170,7 @@ string TextInputStep::enterDescription() {
 }
 
 string TextInputStep::enterText() {
+    fflush(stdin);
     string temp_text_input = "unset";
 
     while (true) {

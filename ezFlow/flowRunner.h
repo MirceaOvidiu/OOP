@@ -15,6 +15,7 @@ public:
 
     FlowRunner();
 
+    ///@brief Flow runner utilities
     void addError(const std::string &error);
 
     static std::vector<std::vector<std::string>> readCSV(const std::string &fname);
@@ -27,10 +28,14 @@ public:
 
     static string createRunFile(const std::string &flowName);
 
+    ///@brief Functions to be called by the Parser
     static void runTitleStep(std::vector<std::string> &line, const string &run_file);
 
     static void runTextStep(std::vector<std::string> &line, const string &run_file);
 
+    static void runTextInputStep(std::vector<std::string> &line, const string &run_file);
+
+    ///@brief The actual parser
     static void flowParser(std::vector<std::vector<std::string>> &content);
 };
 

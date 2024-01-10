@@ -90,7 +90,6 @@ string FlowRunner::createRunFile(const std::string &flowName) {
 string TitleStep::writeTitleStep(const TitleStep &titleStep, const string &run_file) {
     std::ofstream runFile;
     runFile.open(run_file, std::ios::app);
-    runFile << titleStep.getTitle() << " RUN FILE\n";
     runFile << "INDEX, TYPE, ARG1, ARG2\n";
     runFile << titleStep.getIndex() << "," << titleStep.type << "," << titleStep.getTitle() << ","
             << titleStep.getSubtitle() << "\n";
@@ -133,6 +132,21 @@ void FlowRunner::runTextStep(std::vector<std::string> &line, const string &runfi
     std::cout << "Text step written to run file...\n";
 }
 
+void FlowRunner::runTextInputStep(std::vector<std::string> &line, const string &runfile) {
+    std::cout << "Running text input step...\n";
+    std::cout << "Index: " << line[0] << "\n";
+    std::cout << "Description: " << line[2] << "\n";
+    std::cout << "Text input: " << line[3] << " _SET AT RUNTIME_" << "\n";
+
+    TextInputStep textInputStep = TextInputStep();
+    textInputStep.setIndex(std::stoi(line[0]));
+    textInputStep.setDescription(line[2]);
+    textInputStep.setTextInput(TextInputStep::enterText()); ///@details set at runtime
+    TextInputStep::writeTextInputStep(textInputStep,runfile);
+
+    std::cout << "Text input step written to run file...\n";
+}
+
 void FlowRunner::flowParser(std::vector<std::vector<std::string>> &content) {
     std::cout << "Parsing flow config file...\n";
     std::string runfile = "./FlowRunFiles/" + getFlowTitle(content) + "RunFile.csv";
@@ -145,6 +159,10 @@ void FlowRunner::flowParser(std::vector<std::vector<std::string>> &content) {
 
             if (word == "TEXT") {
                 runTextStep(line, runfile);
+            }
+
+            if (word == "TEXT INPUT") {
+                runTextInputStep(line, runfile);
             }
         }
         std::cout << "\n";
