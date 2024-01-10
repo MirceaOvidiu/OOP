@@ -45,7 +45,7 @@ void CLI::createFlowMenu() {
 
             TextStep Text = TextStep();
             TextStep::setupTextStep(Text);
-            Text.index = step_count;
+            Text.setIndex(step_count);
             TextStep::writeTextStep(Text, filename);
         }
 
@@ -53,7 +53,7 @@ void CLI::createFlowMenu() {
             step_count += 1;
             TextInputStep TextInput = TextInputStep();
             TextInputStep::setupTextInputStep(TextInput);
-            TextInput.index = step_count;
+            TextInput.setIndex(step_count);
             TextInputStep::writeTextInputStep(TextInput, filename);
         }
 
@@ -125,13 +125,27 @@ void CLI::runFlowMenu() {
     FlowRunner flowRunner = FlowRunner();
     std::vector<vector<string>> flows;
     std::string chosen_flow;
+    std::string flow_config_file;
+    std::string flow_run_file;
+    std::vector<std::vector<std::string>> flow_config;
     flows = FlowRunner::readCSV("./FlowList.csv");
 
     cout << "Choose a flow to run:\n";
     FlowRunner::displayContent(flows);
-    chosen_flow = flowRunner.chooseFlow(flows);
+    chosen_flow = FlowRunner::chooseFlow(flows);
 
     cout << "Chosen flow: " << chosen_flow << "\n";
+
+    flow_config_file = "./FlowConfigFiles/" + chosen_flow + "FlowConfig.csv";
+
+    cout << "Flow config file contents:\n";
+    flow_config = FlowRunner::readCSV(flow_config_file);
+    FlowRunner::displayContent(flow_config);
+
+    ///@details if the flow was found, we can run it and create a run file
+    FlowRunner::createRunFile(chosen_flow);
+
+    FlowRunner::flowParser(flow_config);
 }
 
 void CLI::mainMenu() {

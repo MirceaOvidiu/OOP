@@ -84,10 +84,10 @@ int FlowUtils::chooseStep() {
 }
 
 void FlowUtils::printOperations() {
-    cout << " + : Addition\n";
-    cout << " - : Subtraction\n";
-    cout << " * : Multiplication\n";
-    cout << " / : Division\n";
+    cout << "  +  : Addition\n";
+    cout << "  -  : Subtraction\n";
+    cout << "  *  : Multiplication\n";
+    cout << "  /  : Division\n";
     cout << " MIN : Minimum\n";
     cout << " MAX : Maximum\n";
 }

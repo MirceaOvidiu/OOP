@@ -4,3 +4,6 @@ test,./FlowConfigFiles/testFlowConfig.csv
 test21,./FlowConfigFiles/test21FlowConfig.csv
 yolo,./FlowConfigFiles/yoloFlowConfig.csv
 hauling,./FlowConfigFiles/haulingFlowConfig.csv
+doamneajuta,./FlowConfigFiles/doamneajutaFlowConfig.csv
+test,./FlowConfigFiles/testFlowConfig.csv
+test2,./FlowConfigFiles/test2FlowConfig.csv

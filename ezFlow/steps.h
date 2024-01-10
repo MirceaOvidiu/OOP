@@ -19,6 +19,8 @@ public:
 
     TitleStep();
 
+    ~TitleStep();
+
     void setTitle(string new_title);
     void setSubtitle(string new_subtitle);
     void setIndex(int new_index);
@@ -31,6 +33,7 @@ public:
     static string enterSubtitle();
     static void setupTitleStep(TitleStep &newTitle);
     static void writeTitleStep(const TitleStep &titleStep);
+    static string writeTitleStep(const TitleStep &titleStep, const string &filename);
 };
 
 class TextStep : public TitleStep {
@@ -84,6 +87,7 @@ public:
 
     [[nodiscard]] float getNumberInput() const;
     [[nodiscard]] string getDescription() const;
+    [[nodiscard]] int getIndex() const;
 
     static string enterDescription();
     static float enterNumberStepInput();

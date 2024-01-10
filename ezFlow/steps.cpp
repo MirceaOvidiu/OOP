@@ -5,6 +5,8 @@ TitleStep::TitleStep() {
     this->type = "TITLE";
 }
 
+TitleStep::~TitleStep() = default;
+
 void TitleStep::setTitle(string new_title) {
     this->title = std::move(new_title);
 }
@@ -72,7 +74,7 @@ void TitleStep::writeTitleStep(const TitleStep &titleStep) {
     string filename = "./FlowConfigFiles/" + titleStep.getTitle() + "FlowConfig.csv";
     file.open(filename, ios::app);
     file << "INDEX, TYPE, ARG1, ARG2\n";
-    file << titleStep.index << "," << titleStep.type << "," << titleStep.getTitle() << ","
+    file << titleStep.getIndex() << "," << titleStep.type << "," << titleStep.getTitle() << ","
          << titleStep.getSubtitle() << "\n";
     file.close();
 }
@@ -124,7 +126,7 @@ void TextStep::setupTextStep(TextStep &newText) {
 void TextStep::writeTextStep(const TextStep &textStep, const string &filename) {
     ofstream file;
     file.open(filename, ios::app);
-    file << textStep.index << "," << textStep.type << "," << textStep.getText() << "," << textStep.getCopy()
+    file << textStep.getIndex() << "," << textStep.type << "," << textStep.getText() << "," << textStep.getCopy()
          << "\n";
     file.close();
 }
@@ -132,6 +134,7 @@ void TextStep::writeTextStep(const TextStep &textStep, const string &filename) {
 TextInputStep::TextInputStep() {
     this->index = 0;
     this->type = "TEXT INPUT";
+    this->subtitle = "unset";
 }
 
 void TextInputStep::setDescription(string new_description) {
@@ -189,7 +192,7 @@ void TextInputStep::setupTextInputStep(TextInputStep &newTextInput) {
 void TextInputStep::writeTextInputStep(TextInputStep &newTextInput, const string &filename) {
     ofstream file;
     file.open(filename, ios::app);
-    file << newTextInput.index << "," << newTextInput.type << "," << newTextInput.title << ","
+    file << newTextInput.getIndex() << "," << newTextInput.type << "," << newTextInput.title << ","
          << newTextInput.subtitle << "\n";
     file.close();
 }
@@ -214,6 +217,10 @@ float NumberInputStep::getNumberInput() const {
 
 string NumberInputStep::getDescription() const {
     return this->description;
+}
+
+int NumberInputStep::getIndex() const {
+    return this->index;
 }
 
 string NumberInputStep::enterDescription() {
@@ -260,8 +267,8 @@ void NumberInputStep::setupNumberInputStep(NumberInputStep &newNumberInput) {
 void NumberInputStep::writeNumberInputStep(NumberInputStep &newNumberInput, const string &filename) {
     ofstream file;
     file.open(filename, ios::app);
-    file << newNumberInput.index << "," << newNumberInput.type << "," << newNumberInput.description << ","
-         << "\n";
+    file << newNumberInput.getIndex() << "," << newNumberInput.type << "," << newNumberInput.getDescription() << ","
+         << newNumberInput.getNumberInput()<< "\n"; ///will be entered as 0 in the config file
     file.close();
 }
 
@@ -355,7 +362,7 @@ void CalculusStep::writeCalculusStep(CalculusStep &calculusStep, const string &f
     cout << "Writing calculus step to file...\n";
     ofstream file;
     file.open(filename, ios::app);
-    file << calculusStep.index << "," << calculusStep.type << ",";
+    file << calculusStep.getIndex() << "," << calculusStep.type << ",";
 
     FlowUtils::printOperations();
     printSteps(calculusStep);
@@ -376,7 +383,7 @@ void CalculusStep::writeCalculusStep(CalculusStep &calculusStep, const string &f
         }
 
         /// for the last one
-        file << "Step " << enterStep(calculusStep) << ","
+        file << "Step " << enterStep(calculusStep) << "," << calculusStep.getNumberOutput()
              << "\n";
     }
 }
@@ -384,6 +391,7 @@ void CalculusStep::writeCalculusStep(CalculusStep &calculusStep, const string &f
 TextFileStep::TextFileStep() {
     this->index = 0;
     this->type = "TEXT FILE";
+    this->filename = "unset";
 }
 
 void TextFileStep::setFilename(string new_filename) {
@@ -429,6 +437,7 @@ void TextFileStep::writeFileStep(TextFileStep &newTextFile, const string &filena
 CSVFileStep::CSVFileStep() {
     this->index = 0;
     this->type = "CSV FILE";
+    this->filename = "unset";
 }
 
 string CSVFileStep::getFilename() {
@@ -527,6 +536,7 @@ void DisplayStep::writeDisplayStep(const DisplayStep &displayStep, const string 
 OutputStep::OutputStep() {
     this->index = 0;
     this->type = "OUTPUT";
+    this->out_file = "unset";
 }
 
 void OutputStep::writeOutputStep(const OutputStep &outputStep, const string &filename) {

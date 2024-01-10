@@ -5,7 +5,9 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include <stdexcept>  // Include necessary header for std::runtime_error
+#include <stdexcept>
+
+using namespace std;
 
 class FlowRunner {
 public:
@@ -19,9 +21,17 @@ public:
 
     static void displayContent(const std::vector<std::vector<std::string>> &content);
 
-    std::string chooseFlow(const std::vector<std::vector<std::string>>& content);
+    static string getFlowTitle(const std::vector<std::vector<std::string>> &content);
 
-    static void flowParser(const std::vector<std::vector<std::string>> &content);
+    static std::string chooseFlow(const std::vector<std::vector<std::string>>& content);
+
+    static string createRunFile(const std::string &flowName);
+
+    static void runTitleStep(std::vector<std::string> &line, const string &run_file);
+
+    static void runTextStep(std::vector<std::string> &line, const string &run_file);
+
+    static void flowParser(std::vector<std::vector<std::string>> &content);
 };
 
 #endif // OOP_FLOWRUNNER_H
