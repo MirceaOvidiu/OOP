@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 #include <stdexcept>
+#include "steps.h"
 
 using namespace std;
 
@@ -34,6 +35,12 @@ public:
     static void runTextStep(std::vector<std::string> &line, const string &run_file);
 
     static void runTextInputStep(std::vector<std::string> &line, const string &run_file);
+
+    static void runNumberInputStep(std::vector<std::string> &line, const string &run_file, std::vector<NumberInputStep> &number_steps_ptr);
+
+    static float parseCalculusRule(std::vector<NumberInputStep> &number_steps_ptr, std::vector<string> operation_ptr);
+
+    static void runCalculusStep(std::vector<std::string> &line, const string &run_file, std::vector<NumberInputStep> &number_steps_ptr);
 
     ///@brief The actual parser
     static void flowParser(std::vector<std::vector<std::string>> &content);

@@ -212,6 +212,10 @@ void NumberInputStep::setDescription(string new_description) {
     this->description = std::move(new_description);
 }
 
+void NumberInputStep::setIndex(int new_index) {
+    this->index = new_index;
+}
+
 float NumberInputStep::getNumberInput() const {
     return this->number_input;
 }
@@ -287,6 +291,11 @@ void CalculusStep::setIndex(CalculusStep &calculusStep, int new_index) {
     calculusStep.index = new_index;
 }
 
+string CalculusStep::setOperation(const string &operation) {
+    this->operations.push_back(operation);
+    return operation;
+}
+
 float CalculusStep::getNumberOutput() const {
     return this->number_output;
 }
@@ -295,6 +304,14 @@ int CalculusStep::getIndex() const {
     return this->index;
 }
 
+vector<string> CalculusStep::getOperations() const {
+    return this->operations;
+}
+
+/*vector<NumberInputStep> CalculusStep::getInvolvedSteps() const {
+    return this->involved_steps;
+}
+*/
 float CalculusStep::returnMax(vector<NumberInputStep> &involved_steps) {
     float max = 0;
     for (auto &involved_step: involved_steps) {

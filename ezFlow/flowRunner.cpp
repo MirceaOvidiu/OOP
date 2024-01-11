@@ -147,9 +147,67 @@ void FlowRunner::runTextInputStep(std::vector<std::string> &line, const string &
     std::cout << "Text input step written to run file...\n";
 }
 
+void FlowRunner::runNumberInputStep(std::vector<std::string> &line, const string &runfile, std::vector<NumberInputStep> &number_steps_ptr) {
+    std::cout << "Running number input step...\n";
+    std::cout << "Index: " << line[0] << "\n";
+    std::cout << "Description: " << line[2] << "\n";
+    std::cout << "Number input: " << line[3] << " _SET AT RUNTIME_" << "\n";
+
+    NumberInputStep numberInputStep = NumberInputStep();
+    numberInputStep.setIndex(std::stoi(line[0]));
+    numberInputStep.setDescription(line[2]);
+
+    float number_step_value = NumberInputStep::enterNumberStepInput();
+    number_steps_ptr.emplace_back(numberInputStep);
+    numberInputStep.setNumberInput(number_step_value); ///@details set at runtime
+    NumberInputStep::writeNumberInputStep(numberInputStep,runfile);
+
+    std::cout << "Number input step written to run file...\n";
+}
+
+
+/// @TODO: parameters are all empty - fix
+float FlowRunner::parseCalculusRule(std::vector<NumberInputStep> &number_steps_ptr, std::vector<string> operation_ptr) {
+    float result = number_steps_ptr[0].getNumberInput();
+
+    std::cout << "Operations: \n";
+
+    /// PARAMETERS ARE ALL EMPTY
+    for(auto &nr_input_step:number_steps_ptr) {
+        std::cout << "Number input step: " << nr_input_step.getNumberInput() << "\n";
+    }
+
+    for(auto &operation: operation_ptr) {
+        std::cout << "Rule made of operations:" << operation << " ";
+    }
+    cout << "\n";
+
+    return result;
+}
+
+void FlowRunner::runCalculusStep(std::vector<std::string> &line, const string &runfile, std::vector<NumberInputStep> &number_steps_ptr) {
+    float result;
+    std::cout << "Running calculus step...\n";
+    std::cout << "Index: " << line[0] << "\n";
+    std::cout << "Rule: " << line[2] << "\n";
+    std::cout << "Result: " << line[3] << " _COMPUTED AT RUNTIME_" << "\n";
+
+    CalculusStep calculusStep = CalculusStep();
+    CalculusStep::setIndex(calculusStep, std::stoi(line[0]));
+    calculusStep.setOperation(line[2]);
+
+    /// calculus rule parser
+    result = parseCalculusRule(number_steps_ptr, calculusStep.getOperations());
+
+    CalculusStep::writeCalculusStep(calculusStep,runfile);
+
+    std::cout << "Calculus step written to run file with final value: " << result << "...\n";
+}
+
 void FlowRunner::flowParser(std::vector<std::vector<std::string>> &content) {
     std::cout << "Parsing flow config file...\n";
     std::string runfile = "./FlowRunFiles/" + getFlowTitle(content) + "RunFile.csv";
+    std::vector<NumberInputStep> numberInputSteps;
 
     for (auto &line: content) {
         for (string &word: line) {
@@ -163,6 +221,14 @@ void FlowRunner::flowParser(std::vector<std::vector<std::string>> &content) {
 
             if (word == "TEXT INPUT") {
                 runTextInputStep(line, runfile);
+            }
+
+            if (word == "NUMBER INPUT") {
+                runNumberInputStep(line, runfile, numberInputSteps);
+            }
+
+            if (word == "CALCULUS") {
+                runCalculusStep(line, runfile, numberInputSteps);
             }
         }
         std::cout << "\n";

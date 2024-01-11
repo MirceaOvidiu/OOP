@@ -7,3 +7,4 @@ hauling,./FlowConfigFiles/haulingFlowConfig.csv
 doamneajuta,./FlowConfigFiles/doamneajutaFlowConfig.csv
 test,./FlowConfigFiles/testFlowConfig.csv
 test2,./FlowConfigFiles/test2FlowConfig.csv
+cumparaturi,./FlowConfigFiles/cumparaturiFlowConfig.csv

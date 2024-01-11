@@ -84,6 +84,7 @@ public:
 
     void setNumberInput(float new_number_input);
     void setDescription(string new_description);
+    void setIndex(int new_index);
 
     [[nodiscard]] float getNumberInput() const;
     [[nodiscard]] string getDescription() const;
@@ -107,11 +108,16 @@ public:
 
     [[nodiscard]] float getNumberOutput() const;
     [[nodiscard]] int getIndex() const;
+    [[nodiscard]] vector<string> getOperations() const;
+     /// [[nodiscard]] vector<NumberInputStep> getInvolvedSteps() const;
 
     static void setInvolvedSteps(CalculusStep &calculusStep, vector<NumberInputStep> &involved_steps);
     static void setIndex(CalculusStep &calculusStep, int new_index);
+    string setOperation(const string &operation);
+
     static float returnMax(vector<NumberInputStep> &involved_steps);
     static float returnMin(vector<NumberInputStep> &involved_steps);
+
     static string enterOperation();
     static void printSteps(CalculusStep &calculusStep);
     static int enterStep(CalculusStep &calculusStep);
