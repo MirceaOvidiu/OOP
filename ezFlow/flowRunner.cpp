@@ -127,7 +127,7 @@ void FlowRunner::runTextStep(std::vector<std::string> &line, const string &runfi
     textStep.setIndex(std::stoi(line[0]));
     textStep.setText(line[2]);
     textStep.setCopy();/// @details has no arguments by design, field is copied from the text field
-    TextStep::writeTextStep(textStep,runfile);
+    TextStep::writeTextStep(textStep, runfile);
 
     std::cout << "Text step written to run file...\n";
 }
@@ -136,72 +136,255 @@ void FlowRunner::runTextInputStep(std::vector<std::string> &line, const string &
     std::cout << "Running text input step...\n";
     std::cout << "Index: " << line[0] << "\n";
     std::cout << "Description: " << line[2] << "\n";
-    std::cout << "Text input: " << line[3] << " _SET AT RUNTIME_" << "\n";
+    std::cout << "Text input: " << line[3] << " _SET AT RUNTIME_"
+              << "\n";
 
     TextInputStep textInputStep = TextInputStep();
     textInputStep.setIndex(std::stoi(line[0]));
     textInputStep.setDescription(line[2]);
-    textInputStep.setTextInput(TextInputStep::enterText()); ///@details set at runtime
-    TextInputStep::writeTextInputStep(textInputStep,runfile);
+    textInputStep.setTextInput(TextInputStep::enterText());///@details set at runtime
+    TextInputStep::writeTextInputStep(textInputStep, runfile);
 
     std::cout << "Text input step written to run file...\n";
 }
 
-void FlowRunner::runNumberInputStep(std::vector<std::string> &line, const string &runfile, std::vector<NumberInputStep> &number_steps_ptr) {
+NumberInputStep FlowRunner::runNumberInputStep(std::vector<std::string> &line, const string &runfile, std::vector<NumberInputStep> &number_steps_ptr) {
     std::cout << "Running number input step...\n";
     std::cout << "Index: " << line[0] << "\n";
     std::cout << "Description: " << line[2] << "\n";
-    std::cout << "Number input: " << line[3] << " _SET AT RUNTIME_" << "\n";
 
     NumberInputStep numberInputStep = NumberInputStep();
     numberInputStep.setIndex(std::stoi(line[0]));
     numberInputStep.setDescription(line[2]);
 
-    float number_step_value = NumberInputStep::enterNumberStepInput();
-    number_steps_ptr.emplace_back(numberInputStep);
-    numberInputStep.setNumberInput(number_step_value); ///@details set at runtime
-    NumberInputStep::writeNumberInputStep(numberInputStep,runfile);
+    float number_step_value = NumberInputStep::enterNumberStepInput();///@details set at runtime
+    numberInputStep.setNumberInput(number_step_value);
+
+    std::cout << "Numeric value: " << numberInputStep.getNumberInput() << "_SET AT RUNTIME_"
+              << "\n";
+
+    NumberInputStep::writeNumberInputStep(numberInputStep, runfile);
 
     std::cout << "Number input step written to run file...\n";
+
+    return numberInputStep;
 }
 
-
-/// @TODO: parameters are all empty - fix
-float FlowRunner::parseCalculusRule(std::vector<NumberInputStep> &number_steps_ptr, std::vector<string> operation_ptr) {
+float FlowRunner::parseCalculusRule(std::vector<NumberInputStep> &number_steps_ptr, const std::string &rule) {
     float result = number_steps_ptr[0].getNumberInput();
+    std::vector<std::string> operations;
+    std::vector<float> number_inputs;
 
-    std::cout << "Operations: \n";
-
-    /// PARAMETERS ARE ALL EMPTY
-    for(auto &nr_input_step:number_steps_ptr) {
-        std::cout << "Number input step: " << nr_input_step.getNumberInput() << "\n";
+    for (auto &nr_input_step: number_steps_ptr) {
+        float temp_value = nr_input_step.getNumberInput();
+        number_inputs.push_back(temp_value);
+        std::cout << "Number step " << nr_input_step.getIndex() << " value: " << temp_value << "\n";
     }
 
-    for(auto &operation: operation_ptr) {
-        std::cout << "Rule made of operations:" << operation << " ";
+    /// extract operations
+    for (auto &word: rule) {
+        if (word == '+' || word == '-' || word == '*' || word == '/' || word == 'm' || word == 'M') {
+            std::cout << "Operation: " << word << "\n";
+            operations.emplace_back(1, word);
+        }
     }
-    cout << "\n";
+
+    /// parse operations
+    for (int i = 0; i < operations.size(); i++) {
+        if (operations[i] == "+") {
+            result += number_inputs[i + 1];
+        }
+        if (operations[i] == "-") {
+            result -= number_inputs[i + 1];
+        }
+        if (operations[i] == "*") {
+            result *= number_inputs[i + 1];
+        }
+        if (operations[i] == "/") {
+            result /= number_inputs[i + 1];
+        }
+        if (operations[i] == "m") {
+            result = CalculusStep::returnMin(number_steps_ptr);
+        }
+        if (operations[i] == "M") {
+            result = CalculusStep::returnMax(number_steps_ptr);
+        }
+    }
 
     return result;
 }
 
 void FlowRunner::runCalculusStep(std::vector<std::string> &line, const string &runfile, std::vector<NumberInputStep> &number_steps_ptr) {
     float result;
+    std::string rule = line[2];
     std::cout << "Running calculus step...\n";
     std::cout << "Index: " << line[0] << "\n";
-    std::cout << "Rule: " << line[2] << "\n";
-    std::cout << "Result: " << line[3] << " _COMPUTED AT RUNTIME_" << "\n";
+    std::cout << "Rule: " << rule << "\n";
 
     CalculusStep calculusStep = CalculusStep();
     CalculusStep::setIndex(calculusStep, std::stoi(line[0]));
     calculusStep.setOperation(line[2]);
-
     /// calculus rule parser
-    result = parseCalculusRule(number_steps_ptr, calculusStep.getOperations());
+    result = parseCalculusRule(number_steps_ptr, rule);
+    CalculusStep::setNumberOutput(calculusStep, result);
+    CalculusStep::writeCalculusStepComponents(calculusStep, rule, runfile);
 
-    CalculusStep::writeCalculusStep(calculusStep,runfile);
+    std::cout << "Calculus step written to run file with final value: " << calculusStep.getNumberOutput() << "...\n";
+}
 
-    std::cout << "Calculus step written to run file with final value: " << result << "...\n";
+void FlowRunner::runTxtFileStep(std::vector<std::string> &line, const string &run_file) {
+    std::cout << "Running file step...\n";
+    std::cout << "Index: " << line[0] << "\n";
+    std::cout << "Description: " << line[2] << "\n";
+
+    TextFileStep textFileStep = TextFileStep();
+    textFileStep.setIndex(std::stoi(line[0]));
+    textFileStep.setDescription(line[2]);
+    textFileStep.setFilename(TextFileStep::enterFilename());///@details set at runtime
+    cout << "Filename: " << textFileStep.getFilename() << "\n";
+    TextFileStep::writeFileStep(textFileStep, run_file);
+
+    std::cout << "Txt file step written to run file...\n";
+}
+
+void FlowRunner::runCSVFileStep(std::vector<std::string> &line, const string &run_file) {
+    std::cout << "Running file step...\n";
+    std::cout << "Index: " << line[0] << "\n";
+    std::cout << "Description: " << line[2] << "\n";
+
+    CSVFileStep csvFileStep = CSVFileStep();
+    csvFileStep.setIndex(std::stoi(line[0]));
+    csvFileStep.setDescription(line[2]);
+    csvFileStep.setFilename(CSVFileStep::enterFilename());///@details set at runtime
+    cout << "Filename: " << csvFileStep.getFilename() << "\n";
+    CSVFileStep::writeFileStep(csvFileStep, run_file);
+
+    std::cout << "CSV file step written to run file...\n";
+}
+
+void FlowRunner::runDisplayStep(std::vector<std::string> &line, const std::string &run_file) {
+    std::cout << "Running display step...\n";
+    std::cout << "Index: " << line[0] << "\n";
+    std::cout << "Filename to display:  " << line[2] << "\n";
+
+    DisplayStep displayStep = DisplayStep();
+    displayStep.setIndex(std::stoi(line[0]));
+    displayStep.file_to_display = line[2];
+    FlowRunner::displayContent(FlowRunner::readCSV(line[2]));
+    DisplayStep::writeDisplayStep(displayStep, run_file);
+    std::cout << "Display step written to run file...\n";
+}
+
+template<typename T>
+void FlowRunner::writeStep(const T &input, const vector<vector<string>> &run_file, const string &out_file) {
+    std::cerr << "Wrong selection input";
+}
+
+template<>
+void FlowRunner::writeStep(const string &input, const vector<vector<string>> &run_file, const string &out_file) {
+    std::ofstream outfile;
+    outfile.open(out_file, std::ios::app);
+
+    for (auto &line: run_file) {
+        if (line[1] == input) {
+            outfile << line[0] << "," << line[1] << "," << line[2] << "," << line[3] << "\n";
+        }
+    }
+
+    outfile.close();
+}
+
+template<>
+void FlowRunner::writeStep(const int &input, const vector<vector<string>> &run_file, const string &out_file) {
+    std::ofstream outfile;
+    outfile.open(out_file, std::ios::app);
+
+    for (auto &line: run_file) {
+        if (line[0] == std::to_string(input)) {
+            outfile << line[0] << "," << line[1] << "," << line[2] << "," << line[3] << "\n";
+        }
+    }
+
+    outfile.close();
+}
+
+void FlowRunner::runOutputStep(std::vector<std::string> &line, const std::string &run_file) {
+    std::vector<std::vector<std::string>> run_file_content;
+    string flow_title;
+    string out_file_name;
+    string out_file_full_path;
+    run_file_content = FlowRunner::readCSV(run_file);
+
+    for (const auto &i: run_file_content) {
+        if (i[1] == "TITLE") {
+            flow_title = i[2];
+        }
+    }
+
+    std::cout << "Running output step...\n";
+    std::cout << "Index: " << line[0] << "\n";
+
+    std::cout << "Enter outfile name (.csv) "
+              << "\n";
+    out_file_name = CSVFileStep::enterFilename();
+
+    out_file_full_path = "./FlowOutfiles/" + flow_title + "_" + out_file_name;
+
+    ofstream outfile;
+    outfile.open(out_file_full_path, std::ios::app);
+
+    cout << "Select by: index or type?\n";
+
+    string selection;
+    cin >> selection;
+
+    if (selection == "index") {
+        std::cout << " ! Type 112 to exit !\n";
+        for (int i = 0; i < run_file_content.size(); i++) {
+            int index;
+            cout << "Enter index: \n";
+            cin >> index;
+
+            if (index == 112) {
+                break;
+            } else {
+                writeStep(index, run_file_content, out_file_full_path);
+            }
+        }
+    }
+
+    if (selection == "type") {
+        std::cout << " ! Type 112 to exit !\n";
+        for (int i = 0; i < run_file_content.size(); i++) {
+            string type;
+            cout << "Enter type: \n";
+            cin >> type;
+
+            if (type == "112") {
+                break;
+            } else {
+                writeStep(type, run_file_content, out_file_full_path);
+            }
+        }
+    }
+
+    OutputStep outputStep = OutputStep();
+    outputStep.setIndex(std::stoi(line[0]));
+    outputStep.setOutFile(out_file_full_path);
+    OutputStep::writeOutputStep(outputStep, run_file);
+}
+
+void FlowRunner::runEndStep(std::vector<std::string> &line, const std::string &run_file) {
+    std::cout << "Running end step...\n";
+    std::cout << "Index: " << line[0] << "\n";
+    std::cout << "Time created: " << Utils::getTimeStamp() << "\n";
+
+    EndStep endStep = EndStep();
+    endStep.setIndex(std::stoi(line[0]));
+    endStep.setTimeCreated(Utils::getTimeStamp());
+    EndStep::writeEndStep(endStep, run_file);
+
+    std::cout << "End step written to run file...\n";
 }
 
 void FlowRunner::flowParser(std::vector<std::vector<std::string>> &content) {
@@ -224,11 +407,38 @@ void FlowRunner::flowParser(std::vector<std::vector<std::string>> &content) {
             }
 
             if (word == "NUMBER INPUT") {
-                runNumberInputStep(line, runfile, numberInputSteps);
+                numberInputSteps.push_back(runNumberInputStep(line, runfile, numberInputSteps));
             }
 
             if (word == "CALCULUS") {
+                if (numberInputSteps.empty()) {
+                    string message = " non - fatal: No number input steps found\n";
+                    std::cerr << message;
+                    break;
+                }
                 runCalculusStep(line, runfile, numberInputSteps);
+            }
+
+            if (word == "TEXT FILE") {
+                runTxtFileStep(line, runfile);
+            }
+
+            if (word == "CSV FILE") {
+                runCSVFileStep(line, runfile);
+            }
+
+            if (word == "DISPLAY") {
+                runDisplayStep(line, runfile);
+            }
+
+            if (word == "OUTPUT") {
+                runOutputStep(line, runfile);
+            }
+
+            if (word == "END") {
+                std::cout << "End of flow reached...\n";
+                FlowRunner::runEndStep(line, runfile);
+                break;
             }
         }
         std::cout << "\n";

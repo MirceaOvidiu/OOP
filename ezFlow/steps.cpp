@@ -55,7 +55,7 @@ string TitleStep::enterSubtitle() {
         cout << "Enter subtitle: ";
         getline(cin, temp_subtitle);
 
-        if (Utils::titleValidity(temp_subtitle)) {
+        if (Utils::textValidity(temp_subtitle)) {
             return temp_subtitle;
         } else {
             cout << "Invalid subtitle. Try again.\n";
@@ -291,6 +291,10 @@ void CalculusStep::setIndex(CalculusStep &calculusStep, int new_index) {
     calculusStep.index = new_index;
 }
 
+void CalculusStep::setNumberOutput(CalculusStep &calculusStep, float new_number_output) {
+    calculusStep.number_output = new_number_output;
+}
+
 string CalculusStep::setOperation(const string &operation) {
     this->operations.push_back(operation);
     return operation;
@@ -385,11 +389,6 @@ void CalculusStep::writeCalculusStep(CalculusStep &calculusStep, const string &f
     FlowUtils::printOperations();
     printSteps(calculusStep);
 
-    if (calculusStep.involved_steps.empty()) {
-        cout << "No number steps were added. \n";
-        return;
-    }
-
     if (calculusStep.involved_steps.size() == 1) {
         file << "Step " << enterStep(calculusStep) << ","
              << "\n";
@@ -406,14 +405,28 @@ void CalculusStep::writeCalculusStep(CalculusStep &calculusStep, const string &f
     }
 }
 
+void CalculusStep::writeCalculusStepComponents(CalculusStep &calculusStep, const string& rule, const string &filename) {
+    ofstream file;
+    file.open(filename, ios::app);
+
+    CalculusStep calculusStep1 = CalculusStep();
+    file << calculusStep.getIndex() << "," << calculusStep.type << "," << rule << "," << calculusStep.getNumberOutput()
+         << "\n";
+}
+
 TextFileStep::TextFileStep() {
     this->index = 0;
     this->type = "TEXT FILE";
+    this->description = "unset";
     this->filename = "unset";
 }
 
 void TextFileStep::setFilename(string new_filename) {
     this->filename = std::move(new_filename);
+}
+
+void TextFileStep::setDescription(string new_description) {
+    this->description = std::move(new_description);
 }
 
 void TextFileStep::setIndex(int new_index) {
@@ -442,24 +455,21 @@ string TextFileStep::enterFilename() {
 
 void TextFileStep::setupTextFileStep(TextFileStep &newTextFile) {
     std::cout << "Setting up a TEXT FILE step...\n";
-    newTextFile.setFilename(enterFilename());
+    newTextFile.setDescription(TextInputStep::enterDescription());
 }
 
 void TextFileStep::writeFileStep(TextFileStep &newTextFile, const string &filename) {
     ofstream file;
     file.open(filename, ios::app);
-    file << newTextFile.index << "," << newTextFile.type << "," << newTextFile.getFilename() << "\n";
+    file << newTextFile.index << "," << newTextFile.type << "," << newTextFile.description << "," << newTextFile.getFilename() << "\n";
     file.close();
 }
 
 CSVFileStep::CSVFileStep() {
     this->index = 0;
     this->type = "CSV FILE";
+    this->description = "unset";
     this->filename = "unset";
-}
-
-string CSVFileStep::getFilename() {
-    return this->filename;
 }
 
 int CSVFileStep::getIndex() const {
@@ -488,19 +498,23 @@ void CSVFileStep::setIndex(int new_index) {
 
 void CSVFileStep::setupCSVFileStep(CSVFileStep &newCSVFile) {
     std::cout << "Setting up a CSV FILE step...\n";
-    newCSVFile.setFilename(enterFilename());
+    newCSVFile.setDescription(TextInputStep::enterDescription());
 }
 
 void CSVFileStep::writeFileStep(CSVFileStep &newCSVFile, const string &filename) {
     ofstream file;
     file.open(filename, ios::app);
-    file << newCSVFile.index << "," << newCSVFile.type << "," << newCSVFile.filename << "\n";
+    file << newCSVFile.index << "," << newCSVFile.type << "," << newCSVFile.description  << "," << newCSVFile.filename << "\n";
     file.close();
 }
 
 DisplayStep::DisplayStep() {
     this->index = 0;
     this->type = "DISPLAY";
+}
+
+void DisplayStep::setIndex(int new_index) {
+    this->index = new_index;
 }
 
 void DisplayStep::setFileToDisplay(string new_filename) {
@@ -557,6 +571,18 @@ OutputStep::OutputStep() {
     this->out_file = "unset";
 }
 
+void OutputStep::setIndex(int new_index) {
+    this->index = new_index;
+}
+
+void OutputStep::setOutFile(string new_out_file) {
+    this->out_file = std::move(new_out_file);
+}
+
+string OutputStep::getOutFile() const {
+    return this->out_file;
+}
+
 void OutputStep::writeOutputStep(const OutputStep &outputStep, const string &filename) {
     ofstream file;
     file.open(filename, ios::app);
@@ -569,11 +595,16 @@ EndStep::EndStep() {
     this->type = "END";
 }
 
+void EndStep::setTimeCreated(std::string new_time_created) {
+    this->time_created = std::move(new_time_created);
+}
+
 void EndStep::writeEndStep(const EndStep &endStep, const std::string &filename) {
     ofstream file;
+    std::string time = Utils::getTimeStamp();
     file.open(filename, ios::app);
     file << endStep.index << "," << endStep.type << ","
-         << "created at: " << Utils::getTimeStamp() << "\n";
+         << "created at: " << time << "\n";
     file.close();
 }
 

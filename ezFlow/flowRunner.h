@@ -36,13 +36,26 @@ public:
 
     static void runTextInputStep(std::vector<std::string> &line, const string &run_file);
 
-    static void runNumberInputStep(std::vector<std::string> &line, const string &run_file, std::vector<NumberInputStep> &number_steps_ptr);
+    static NumberInputStep runNumberInputStep(std::vector<std::string> &line, const string &run_file, std::vector<NumberInputStep> &number_steps_ptr);
 
-    static float parseCalculusRule(std::vector<NumberInputStep> &number_steps_ptr, std::vector<string> operation_ptr);
+    static float parseCalculusRule(std::vector<NumberInputStep> &number_steps_ptr, const string& operation_ptr);
 
     static void runCalculusStep(std::vector<std::string> &line, const string &run_file, std::vector<NumberInputStep> &number_steps_ptr);
 
-    ///@brief The actual parser
+    static void runTxtFileStep(std::vector<std::string> &line, const string &run_file);
+
+    static void runCSVFileStep(std::vector<std::string> &line, const string &run_file);
+
+    static void runDisplayStep(std::vector<std::string> &line, const string &run_file);
+
+
+    template<typename T>
+    static void writeStep(const T &input, const vector<vector<string>> &run_file, const string &out_file);
+
+    static void runOutputStep(std::vector<std::string> &line, const string &run_file);
+
+    static void runEndStep(std::vector<std::string> &line, const string &run_file);
+
     static void flowParser(std::vector<std::vector<std::string>> &content);
 };
 

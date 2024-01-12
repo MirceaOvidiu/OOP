@@ -16,7 +16,6 @@ CLI::CLI() {
 void CLI::createFlowMenu() {
     int step_count = 0;
 
-
     cout << "Creating flow...\n";
 
     cout << "Available steps:\n";
@@ -138,6 +137,7 @@ void CLI::runFlowMenu() {
 
     flow_config_file = "./FlowConfigFiles/" + chosen_flow + "FlowConfig.csv";
 
+    ///@details we're printing the contents here to check if the flow config file was read correctly
     cout << "Flow config file contents:\n";
     flow_config = FlowRunner::readCSV(flow_config_file);
     FlowRunner::displayContent(flow_config);

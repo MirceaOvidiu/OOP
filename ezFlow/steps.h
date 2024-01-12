@@ -113,6 +113,7 @@ public:
 
     static void setInvolvedSteps(CalculusStep &calculusStep, vector<NumberInputStep> &involved_steps);
     static void setIndex(CalculusStep &calculusStep, int new_index);
+    static void setNumberOutput(CalculusStep &calculusStep, float new_number_output);
     string setOperation(const string &operation);
 
     static float returnMax(vector<NumberInputStep> &involved_steps);
@@ -122,17 +123,20 @@ public:
     static void printSteps(CalculusStep &calculusStep);
     static int enterStep(CalculusStep &calculusStep);
     static void writeCalculusStep(CalculusStep &calculusStep, const string &filename);
+    static void writeCalculusStepComponents(CalculusStep &calculusStep, const string& rule, const string &filename);
 };
 
 class TextFileStep {
 public:
     int index;
     string type;
+    string description;
     string filename;
 
     TextFileStep();
 
     void setFilename(string new_filename);
+    void setDescription(string new_description);
     virtual void setIndex(int new_index);
 
     [[nodiscard]] string getFilename() const;
@@ -140,6 +144,8 @@ public:
     static string enterFilename();
     static void setupTextFileStep(TextFileStep &newTextFile);
     static void writeFileStep(TextFileStep &newTextFile, const string &filename);
+
+    friend class CSVFileStep;
 };
 
 class CSVFileStep : public TextFileStep {
@@ -152,11 +158,12 @@ public:
     static string enterFilename();
     void setIndex(int new_index) override;
 
-    [[nodiscard]] string getFilename();
     [[nodiscard]] int getIndex() const;
 
     static void setupCSVFileStep(CSVFileStep &newCSVFile);
     static void writeFileStep(CSVFileStep &newCSVFile, const string &filename);
+
+    friend class TextFileStep;
 };
 
 class DisplayStep {
@@ -167,6 +174,7 @@ public:
 
     DisplayStep();
 
+    virtual void setIndex(int new_index);
     void setFileToDisplay(string new_filename);
 
     [[nodiscard]] string getFileToDisplay() const;
@@ -177,7 +185,7 @@ public:
     static void writeDisplayStep(const DisplayStep &displayStep, const string &filename);
 };
 
-class OutputStep {
+class OutputStep : DisplayStep {
 public:
     int index;
     string type;
@@ -185,16 +193,23 @@ public:
 
     OutputStep();
 
+    void setIndex(int new_index) override;
+    void setOutFile(string new_out_file);
+
+    [[nodiscard]] string getOutFile() const;
     static void writeOutputStep(const OutputStep &outputStep, const string &filename);
 };
 
-class EndStep {
+class EndStep : public TitleStep{
 public:
     int index;
     string type;
     string flow_list;
+    string time_created;
 
     EndStep();
+
+    void setTimeCreated(string new_time_created);
 
     static void writeEndStep(const EndStep &endStep, const string &filename);
     static void addFlowToList(const TitleStep &titleStep);

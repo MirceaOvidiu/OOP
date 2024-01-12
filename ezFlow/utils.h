@@ -7,6 +7,7 @@
 #include <iostream>
 #include <regex>
 #include <string>
+#include <type_traits>
 
 using namespace std;
 
@@ -23,6 +24,13 @@ public:
     static bool operationValidity(const std::string &operation);
 
     static std::string getTimeStamp();
+
+    /// No sense to write it in a separate .cpp
+    template<typename T>
+    static bool isInt(const T& value) {
+        return std::is_same<T, int>::value;
+    }
+
 };
 
 class FlowUtils {

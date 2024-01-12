@@ -38,7 +38,7 @@ bool Utils::isCsvFile(const std::string &filename) {
 
 bool Utils::operationValidity(const std::string &operation) {
     if (operation == "+" || operation == "-" || operation == "*" || operation == "/" ||
-        operation == "MIN" || operation == "MAX") {
+        operation == "m" || operation == "M") {
         return true;
     } else {
         return false;
