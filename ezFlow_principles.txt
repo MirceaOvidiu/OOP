@@ -1,0 +1,27 @@
+Principles:
+
+The files are split into .h/.cpp for easier managing.
+Their names are related to the contents.
+
+1. Flow Creation -> config files
+
+    The step creation phase consists of taking empty objects, specific to the step type and adding them to the flow config file,
+    which contains all input passed in the creation phase - as in the factory method.
+
+    Each step has it's own class and similarly named functions for easier readabilty, and for the facts that different checks are in place for their fields.
+
+    ! In the step creation phase the user is forced to provide correct input.
+
+    The purpose of the config file result is for the following:
+
+2. Flow running -> run files, which play the role of test files also.
+    Here, the config file is parsed, and based on its contents, the user is prompted to provide runtime input. 
+    Other step objects are now personalised and written to the Runfile
+    Output files can be created, with steps taken from the file's Runfile
+
+    If passing wrong input in vital phases such as flow choosing, the user will get an error thrown and exec will stop.
+
+3. Flow List , Analytics
+    As the name suggests, it contains the flow names and paths of their config files, but also their analytics.
+
+    For the Analytics, an observer is placed in analytics.cpp and is pinged in phases of the flowParser function.
