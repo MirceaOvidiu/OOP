@@ -166,7 +166,6 @@ void CLI::mainMenu() {
             break;
         case 2:
             FlowRunner::displayContent(FlowRunner::readCSV("./FlowList.csv"));
-            break;
         case 3:
             runFlowMenu();
             break;

@@ -1,5 +1,3 @@
 FLOW TITLE,CONFIG FILE,TIMES STARTED, TIMES COMPLETED
-chefInCamin,./FlowConfigFiles/chefInCaminFlowConfig.csv,1,1
-chefInCamin,./FlowConfigFiles/chefInCaminFlowConfig.csv,2,2
-paste,./FlowConfigFiles/pasteFlowConfig.csv
-paste,./FlowConfigFiles/pasteFlowConfig.csv
+chef,./FlowConfigFiles/chefFlowConfig.csv0,0,0
+chef,./FlowConfigFiles/chefFlowConfig.csv0,1,1
