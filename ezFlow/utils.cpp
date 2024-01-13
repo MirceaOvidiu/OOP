@@ -4,7 +4,9 @@
 
 // Utils.cpp
 
-#include "Utils.h"
+#include "utils.h"
+#include <flowRunner.h>
+#include <fstream>
 
 using namespace std;
 
@@ -90,5 +92,27 @@ void FlowUtils::printOperations() {
     cout << "  /  : Division\n";
     cout << " MIN : Minimum\n";
     cout << " MAX : Maximum\n";
+}
+
+void FlowUtils::deleteFlow(const string &title) {
+    std::ofstream flow_list;
+    std::vector<vector<string>> flow_list_data;
+    flow_list.open("./FlowConfigFiles/FlowList.csv", std::ios_base::app);
+    flow_list_data = FlowRunner::readCSV("FlowList.csv");
+
+    for (int i = 0; i < flow_list_data.size(); i++) {
+        if (flow_list_data[i][0] == title) {
+            flow_list_data.erase(flow_list_data.begin() + i);
+            break;
+        }
+    }
+
+    ///@verbatim can't delete outfile
+
+    string config_file = "./FlowConfigFiles/" + title + "FlowConfig.csv";
+    remove(config_file.c_str());
+
+    string run_file = "./FlowRunFiles/" + title + "FlowRun.csv";
+    remove(run_file.c_str());
 }
 

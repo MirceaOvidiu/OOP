@@ -5,7 +5,6 @@
 // FlowRunner.cpp
 
 #include "flowRunner.h"
-#include "steps.h"
 
 using namespace std;
 
@@ -380,17 +379,29 @@ void FlowRunner::runEndStep(std::vector<std::string> &line, const std::string &r
     std::cout << "Time created: " << Utils::getTimeStamp() << "\n";
 
     EndStep endStep = EndStep();
-    endStep.setIndex(std::stoi(line[0]));
+    endStep.index = std::stoi(line[0]);
     endStep.setTimeCreated(Utils::getTimeStamp());
     EndStep::writeEndStep(endStep, run_file);
 
     std::cout << "End step written to run file...\n";
 }
 
-void FlowRunner::flowParser(std::vector<std::vector<std::string>> &content) {
+void FlowRunner::flowParser(std::vector<std::vector<std::string>> &content, std::vector<vector<string>>& flow_list_content) {
     std::cout << "Parsing flow config file...\n";
     std::string runfile = "./FlowRunFiles/" + getFlowTitle(content) + "RunFile.csv";
     std::vector<NumberInputStep> numberInputSteps;
+    Observer observer = Observer();
+
+    for(auto &i: flow_list_content) {
+        if (i[0] == getFlowTitle(content)) {
+            observer.setFlowName(i[0]);
+            observer.times_started = std::stoi(i[2]);
+            observer.times_finished = std::stoi(i[3]);
+        }
+    }
+
+    ///@details Running started
+    observer.updateStarted();
 
     for (auto &line: content) {
         for (string &word: line) {
@@ -437,6 +448,9 @@ void FlowRunner::flowParser(std::vector<std::vector<std::string>> &content) {
 
             if (word == "END") {
                 std::cout << "End of flow reached...\n";
+                ///@details Running finished
+                observer.updateFinished();
+                Observer::updateAnalytics(observer);
                 FlowRunner::runEndStep(line, runfile);
                 break;
             }

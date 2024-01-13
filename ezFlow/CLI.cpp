@@ -6,6 +6,7 @@
 
 #include "CLI.h"
 #include "steps.h"
+#include "flowRunner.h"
 
 using namespace std;
 
@@ -122,6 +123,7 @@ void CLI::createFlowMenu() {
 
 void CLI::runFlowMenu() {
     FlowRunner flowRunner = FlowRunner();
+    Observer observer = Observer();
     std::vector<vector<string>> flows;
     std::string chosen_flow;
     std::string flow_config_file;
@@ -134,6 +136,7 @@ void CLI::runFlowMenu() {
     chosen_flow = FlowRunner::chooseFlow(flows);
 
     cout << "Chosen flow: " << chosen_flow << "\n";
+    observer.setFlowName(chosen_flow);
 
     flow_config_file = "./FlowConfigFiles/" + chosen_flow + "FlowConfig.csv";
 
@@ -145,14 +148,16 @@ void CLI::runFlowMenu() {
     ///@details if the flow was found, we can run it and create a run file
     FlowRunner::createRunFile(chosen_flow);
 
-    FlowRunner::flowParser(flow_config);
+    FlowRunner::flowParser(flow_config, flows);
 }
 
 void CLI::mainMenu() {
     int choice;
     cout << "1. Create new flow\n";
-    cout << "2. Open and run existing flow\n";
-    cout << "3. Exit\n";
+    cout << "2. See existing flows\n";
+    cout << "3. Open and run existing flow\n";
+    cout << "4. Delete flow\n";
+    cout << "5. Exit\n";
     cin >> choice;
 
     switch (choice) {
@@ -160,13 +165,18 @@ void CLI::mainMenu() {
             createFlowMenu();
             break;
         case 2:
-            runFlowMenu();
+            FlowRunner::displayContent(FlowRunner::readCSV("./FlowList.csv"));
             break;
         case 3:
-            cout << "Quitting...\n";
+            runFlowMenu();
+            break;
+        case 4:
+            FlowUtils::deleteFlow(FlowRunner::chooseFlow(FlowRunner::readCSV("./FlowList.csv")));
+            break;
+        case 5:
+            cout << "Exiting...\n";
             exit(1);
         default:
-            cout << "Invalid choice. Try again.\n";
-            break;
+            throw_with_nested(std::invalid_argument("Invalid choice. Try again.\n"));
     }
 }

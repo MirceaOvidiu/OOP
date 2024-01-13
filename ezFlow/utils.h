@@ -7,7 +7,6 @@
 #include <iostream>
 #include <regex>
 #include <string>
-#include <type_traits>
 
 using namespace std;
 
@@ -25,12 +24,6 @@ public:
 
     static std::string getTimeStamp();
 
-    /// No sense to write it in a separate .cpp
-    template<typename T>
-    static bool isInt(const T& value) {
-        return std::is_same<T, int>::value;
-    }
-
 };
 
 class FlowUtils {
@@ -42,6 +35,8 @@ public:
     static int chooseStep();
 
     static void printOperations();
+
+    static void deleteFlow(const string &title);
 };
 
 #endif // OOP_UTILS_H

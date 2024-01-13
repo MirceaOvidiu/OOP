@@ -1,2 +1,5 @@
-FLOW TITLE, CONFIG FILE PATH
-chefInCamin,./FlowConfigFiles/chefInCaminFlowConfig.csv
+FLOW TITLE,CONFIG FILE,TIMES STARTED, TIMES COMPLETED
+chefInCamin,./FlowConfigFiles/chefInCaminFlowConfig.csv,1,1
+chefInCamin,./FlowConfigFiles/chefInCaminFlowConfig.csv,2,2
+paste,./FlowConfigFiles/pasteFlowConfig.csv
+paste,./FlowConfigFiles/pasteFlowConfig.csv

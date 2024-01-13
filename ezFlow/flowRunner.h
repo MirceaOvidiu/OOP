@@ -7,6 +7,7 @@
 #include <vector>
 #include <stdexcept>
 #include "steps.h"
+#include "analytics.h"
 
 using namespace std;
 
@@ -56,7 +57,7 @@ public:
 
     static void runEndStep(std::vector<std::string> &line, const string &run_file);
 
-    static void flowParser(std::vector<std::vector<std::string>> &content);
+    static void flowParser(std::vector<std::vector<std::string>> &content, std::vector<vector<string>>& flow_list_content);
 };
 
 #endif // OOP_FLOWRUNNER_H

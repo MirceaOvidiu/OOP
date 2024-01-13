@@ -1,0 +1,12 @@
+INDEX, TYPE, ARG1, ARG2
+0,TITLE,chefInCamin,P16 etaj 4
+1,TEXT INPUT,noi,unset
+2,NUMBER INPUT,cate sticle luam,0
+3,NUMBER INPUT,cat costa una,0
+4,NUMBER INPUT,cat insi suntem,0
+5,CALCULUS,Step 3 * Step 3 / Step 4,0
+6,TEXT FILE,bonu,unset
+7,CSV FILE,tabel,unset
+8,DISPLAY,bon.txt,
+9,OUTPUT,unset
+10,END,created at: Fri Jan 12 14:02:43 2024
