@@ -5,8 +5,8 @@
 // CLI.cpp
 
 #include "CLI.h"
-#include "steps.h"
 #include "flowRunner.h"
+#include "steps.h"
 
 using namespace std;
 
@@ -122,34 +122,47 @@ void CLI::createFlowMenu() {
 }
 
 void CLI::runFlowMenu() {
-    FlowRunner flowRunner = FlowRunner();
-    Observer observer = Observer();
-    std::vector<vector<string>> flows;
-    std::string chosen_flow;
-    std::string flow_config_file;
-    std::string flow_run_file;
-    std::vector<std::vector<std::string>> flow_config;
-    flows = FlowRunner::readCSV("./FlowList.csv");
+    try {
+        FlowRunner flowRunner = FlowRunner();
+        Observer observer = Observer();
+        std::vector<std::vector<std::string>> flows;
+        std::string chosen_flow;
+        std::string flow_config_file;
+        std::string flow_run_file;
+        std::vector<std::vector<std::string>> flow_config;
+        flows = FlowRunner::readCSV("./FlowList.csv");
 
-    cout << "Choose a flow to run:\n";
-    FlowRunner::displayContent(flows);
-    chosen_flow = FlowRunner::chooseFlow(flows);
+        cout << "Choose a flow to run:\n";
+        FlowRunner::displayContent(flows);
+        chosen_flow = FlowRunner::chooseFlow(flows);
 
-    cout << "Chosen flow: " << chosen_flow << "\n";
-    observer.setFlowName(chosen_flow);
+        cout << "Chosen flow: " << chosen_flow << "\n";
+        observer.setFlowName(chosen_flow);
 
-    flow_config_file = "./FlowConfigFiles/" + chosen_flow + "FlowConfig.csv";
+        flow_config_file = "./FlowConfigFiles/" + chosen_flow + "FlowConfig.csv";
 
-    ///@details we're printing the contents here to check if the flow config file was read correctly
-    cout << "Flow config file contents:\n";
-    flow_config = FlowRunner::readCSV(flow_config_file);
-    FlowRunner::displayContent(flow_config);
+        ///@details we're printing the contents here to check if the flow config file was read correctly
+        cout << "Flow config file contents:\n";
+        flow_config = FlowRunner::readCSV(flow_config_file);
+        FlowRunner::displayContent(flow_config);
 
-    ///@details if the flow was found, we can run it and create a run file
-    FlowRunner::createRunFile(chosen_flow);
+        ///@details if the flow was found, we can run it and create a run file
+        FlowRunner::createRunFile(chosen_flow);
 
-    FlowRunner::flowParser(flow_config, flows);
+        try {
+            FlowRunner::flowParser(flow_config, flows);
+        } catch (const std::exception& e) {
+            std::cerr << "Exception in flowParser: " << e.what() << std::endl;
+            // rethrow the exception
+            throw;
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Exception in runFlowMenu: " << e.what() << std::endl;
+        // rethrow
+        throw;
+    }
 }
+
 
 void CLI::mainMenu() {
     int choice;
