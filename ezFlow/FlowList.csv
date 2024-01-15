@@ -1,3 +1,7 @@
-FLOW TITLE,CONFIG FILE,TIMES STARTED, TIMES COMPLETED
-chef,./FlowConfigFiles/chefFlowConfig.csv0,0,0
-chef,./FlowConfigFiles/chefFlowConfig.csv0,1,1
+FLOW TITLE,CONFIG FILE,TIMES STARTED, TIMES COMPLETED,ERRORS
+chef,./FlowConfigFiles/chefFlowConfig.csv,0,0,0
+chef,./FlowConfigFiles/chefFlowConfig.csv,1,1,0
+cumparaturi,./FlowConfigFiles/cumparaturiFlowConfig.csv,0,0,0
+cumparaturi,./FlowConfigFiles/cumparaturiFlowConfig.csv,1,1,13
+iesire,./FlowConfigFiles/iesireFlowConfig.csv,0,0,0
+iesire,./FlowConfigFiles/iesireFlowConfig.csv,1,1,-9

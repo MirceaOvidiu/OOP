@@ -20,18 +20,6 @@ void Observer::setFlowName(string new_flow_name) {
     this->flow_name = std::move(new_flow_name);
 }
 
-string Observer::getFlowName(const Observer& observer) {
-    return observer.flow_name;
-}
-
-int Observer::getTimesStarted(const Observer& observer) {
-    return observer.times_started;
-}
-
-int Observer::getTimesFinished(const Observer& observer) {
-    return observer.times_finished;
-}
-
 void Observer::updateStarted() {
     this->times_started += 1;
 }
@@ -43,6 +31,9 @@ void Observer::updateFinished() {
 void Observer::updateAnalytics(const Observer& observer) {
     string flow_list = "FlowList.csv";
     vector<vector<string>> flow_list_content = FlowRunner::readCSV(flow_list);
+    vector<vector<string>> config_file_content;
+    vector<vector<string>> run_file_content;
+    int errors;
     string flow_name = observer.flow_name;
 
     ofstream flow_list_file;
@@ -56,7 +47,12 @@ void Observer::updateAnalytics(const Observer& observer) {
             i[2] = std::to_string(observer.times_started);
             i[3] = std::to_string(observer.times_finished);
 
-            flow_list_file << i[0] << "," << i[1] << "," << i[2] << "," << i[3] << "\n";
+            config_file_content = FlowRunner::readCSV("./FlowConfigFiles/" + flow_name + "FlowConfig.csv");
+            run_file_content = FlowRunner::readCSV("./FlowRunFiles/" + flow_name + "FlowRun.csv");
+
+            errors = run_file_content.size() - config_file_content.size();
+
+            flow_list_file << i[0] << "," << i[1] << "," << i[2] << "," << i[3] << "," << errors << "\n";
             break;
         }
     }

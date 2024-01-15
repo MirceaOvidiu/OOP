@@ -611,7 +611,7 @@ void EndStep::writeEndStep(const EndStep &endStep, const std::string &filename) 
 void EndStep::addFlowToList(const TitleStep &titleStep) {
     ofstream file;
     file.open("FlowList.csv", ios::app);
-    file << titleStep.getTitle() << ",./FlowConfigFiles/" << titleStep.getTitle() << "FlowConfig.csv"
-         << "0" << "," << "0" <<"\n";
+    file << titleStep.getTitle() << ",./FlowConfigFiles/" << titleStep.getTitle() << "FlowConfig.csv" << ","
+         << "0,0,0" << "\n";
     file.close();
 }

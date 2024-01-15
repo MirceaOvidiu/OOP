@@ -24,10 +24,6 @@ public:
 
     void setFlowName(string flow_name);
 
-    static string getFlowName(const Observer& observer);
-    static int getTimesStarted(const Observer& observer);
-    static int getTimesFinished(const Observer& observer);
-
     static void updateAnalytics(const Observer& observer);
 
     Observer();
