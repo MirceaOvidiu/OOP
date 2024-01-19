@@ -1,0 +1,13 @@
+INDEX, TYPE, ARG1, ARG2
+0,TITLE,cumparaturi,mancare
+1,TEXT,lidl,lidl
+2,TEXT INPUT,loc,lidl
+3,NUMBER INPUT,cate paini,5
+4,NUMBER INPUT,cat costa una,2
+5,NUMBER INPUT,la cati impartim,3
+6,CALCULUS,Step 3 * Step 4 / Step 5,3.33333
+7,TEXT FILE,lista,lista.txt
+8,CSV FILE,bon,bon.csv
+9,DISPLAY,sample.txt,
+10,OUTPUT,./FlowOutfiles/cumparaturi_paine.csv
+11,END,created at: Mon Jan 15 08:53:26 2024

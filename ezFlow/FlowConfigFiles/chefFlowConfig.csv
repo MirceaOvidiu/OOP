@@ -1,0 +1,13 @@
+INDEX, TYPE, ARG1, ARG2
+0,TITLE,chef,in camin
+1,TEXT,cine,cine
+2,TEXT INPUT,lista,unset
+3,NUMBER INPUT,cate sticle,0
+4,NUMBER INPUT,cat e una,0
+5,NUMBER INPUT,noi,0
+6,CALCULUS,Step 3 * Step 4 / Step 5,0
+7,TEXT FILE,retete,unset
+8,CSV FILE,bon,unset
+9,DISPLAY,outfile.csv,
+10,OUTPUT,unset
+11,END,created at: Sat Jan 13 02:36:09 2024

@@ -1,0 +1,9 @@
+INDEX, TYPE, ARG1, ARG2
+0,TITLE,iesire,restaurant
+1,TEXT,locatie,locatie
+2,TEXT INPUT,nume,pub18
+3,NUMBER INPUT,cat costa o pizza,34
+4,NUMBER INPUT,cate luam,2
+5,CALCULUS,Step 3 * Step 4,68
+6,TEXT FILE,bon,bon.txt
+7,END,created at: Mon Jan 15 08:56:19 2024

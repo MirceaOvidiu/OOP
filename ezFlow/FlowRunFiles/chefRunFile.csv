@@ -1,0 +1,13 @@
+INDEX, TYPE, ARG1, ARG2
+0,TITLE,chef,in camin
+1,TEXT,cine,cine
+2,TEXT INPUT,lista,prietenii
+3,NUMBER INPUT,cate sticle,12
+4,NUMBER INPUT,cat e una,43.2
+5,NUMBER INPUT,noi,7
+6,CALCULUS,Step 3 * Step 4 / Step 5,74.0571
+7,TEXT FILE,retete,sample.txt
+8,CSV FILE,bon,FlowList.csv
+9,DISPLAY,outfile.csv,
+10,OUTPUT,./FlowOutfiles/chef_outfile.csv
+11,END,created at: Sat Jan 13 02:38:54 2024

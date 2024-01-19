@@ -1,0 +1,13 @@
+INDEX, TYPE, ARG1, ARG2
+0,TITLE,cumparaturi,mancare
+1,TEXT,lidl,lidl
+2,TEXT INPUT,loc,unset
+3,NUMBER INPUT,cate paini,0
+4,NUMBER INPUT,cat costa una,0
+5,NUMBER INPUT,la cati impartim,0
+6,CALCULUS,Step 3 * Step 4 / Step 5,0
+7,TEXT FILE,lista,unset
+8,CSV FILE,bon,unset
+9,DISPLAY,sample.txt,
+10,OUTPUT,unset
+11,END,created at: Mon Jan 15 08:49:32 2024
