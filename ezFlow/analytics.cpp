@@ -9,7 +9,6 @@
 using namespace std;
 
 ///@brief Observer class
-
 Observer::Observer(){
     this->times_finished = 0;
     this->times_started = 0;

@@ -4,4 +4,6 @@ chef,./FlowConfigFiles/chefFlowConfig.csv,1,1,0
 cumparaturi,./FlowConfigFiles/cumparaturiFlowConfig.csv,0,0,0
 cumparaturi,./FlowConfigFiles/cumparaturiFlowConfig.csv,1,1,13
 iesire,./FlowConfigFiles/iesireFlowConfig.csv,0,0,0
-iesire,./FlowConfigFiles/iesireFlowConfig.csv,1,1,-9
+iesire,./FlowConfigFiles/iesireFlowConfig.csv,1,1,9
+omegalul,./FlowConfigFiles/omegalulFlowConfig.csv,0,0,0
+omegalul,./FlowConfigFiles/omegalulFlowConfig.csv,1,1,-10
