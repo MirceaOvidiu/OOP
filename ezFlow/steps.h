@@ -1,12 +1,12 @@
 #ifndef ezFlow_STEPS_H
 #define ezFlow_STEPS_H
 
-#include <iostream>
+#include "utils.h"
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
-#include "utils.h"
 
 using namespace std;
 
@@ -109,7 +109,7 @@ public:
     [[nodiscard]] float getNumberOutput() const;
     [[nodiscard]] int getIndex() const;
     [[nodiscard]] vector<string> getOperations() const;
-     /// [[nodiscard]] vector<NumberInputStep> getInvolvedSteps() const;
+    [[nodiscard]] vector<NumberInputStep> getInvolvedSteps() const;
 
     static void setInvolvedSteps(CalculusStep &calculusStep, vector<NumberInputStep> &involved_steps);
     static void setIndex(CalculusStep &calculusStep, int new_index);
@@ -123,7 +123,7 @@ public:
     static void printSteps(CalculusStep &calculusStep);
     static int enterStep(CalculusStep &calculusStep);
     static void writeCalculusStep(CalculusStep &calculusStep, const string &filename);
-    static void writeCalculusStepComponents(CalculusStep &calculusStep, const string& rule, const string &filename);
+    static void writeCalculusStepComponents(CalculusStep &calculusStep, const string &rule, const string &filename);
 };
 
 class TextFileStep {
@@ -200,7 +200,7 @@ public:
     static void writeOutputStep(const OutputStep &outputStep, const string &filename);
 };
 
-class EndStep : public TitleStep{
+class EndStep : public TitleStep {
 public:
     int index;
     string type;
@@ -215,4 +215,4 @@ public:
     static void addFlowToList(const TitleStep &titleStep);
 };
 
-#endif //ezFlow_STEPS_H
+#endif//ezFlow_STEPS_H
